@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.config;
+package net.bukkitlabs.bukkitlabscloud.util.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

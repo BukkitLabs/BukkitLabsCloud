@@ -1,9 +1,9 @@
 package net.bukkitlabs.bukkitlabscloud.handler;
 
-import net.bukkitlabs.bukkitlabscloud.config.ConfigCreator;
-import net.bukkitlabs.bukkitlabscloud.config.Configuration;
-import net.bukkitlabs.bukkitlabscloud.config.ConfigurationProvider;
-import net.bukkitlabs.bukkitlabscloud.config.YamlConfiguration;
+import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
+import net.bukkitlabs.bukkitlabscloud.util.config.Configuration;
+import net.bukkitlabs.bukkitlabscloud.util.config.ConfigurationProvider;
+import net.bukkitlabs.bukkitlabscloud.util.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;

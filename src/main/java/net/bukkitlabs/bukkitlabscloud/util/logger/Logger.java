@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.logger;
+package net.bukkitlabs.bukkitlabscloud.util.logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -69,9 +69,11 @@ public class Logger{
     }
 
     private String generateLogMessage(final Level level,final String message){
-        final StringBuilder stringBuilder=new StringBuilder()
+        final StringBuilder stringBuilder = new StringBuilder()
                 .append(level.getConsoleColor().getColorCode())
-                .append("["+getTime()+"]")
+                .append("[")
+                .append(getTime())
+                .append("]")
                 .append(" ")
                 .append(level.getPrefix())
                 .append(" ")
@@ -82,9 +84,11 @@ public class Logger{
     }
 
     private String generateLogMessage(final Level level,final String message,final Exception exception){
-        final StringBuilder stringBuilder=new StringBuilder()
+        final StringBuilder stringBuilder= new StringBuilder()
                 .append(level.getConsoleColor().getColorCode())
-                .append("["+getTime()+"]")
+                .append("[")
+                .append(getTime())
+                .append("]")
                 .append(" ")
                 .append(level.getPrefix())
                 .append(" ")

@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.logger;
+package net.bukkitlabs.bukkitlabscloud.util.logger;
 
 public enum ConsoleColor{
     RESET("\u001B[0m"),

@@ -1,6 +1,6 @@
 package net.bukkitlabs.bukkitlabscloud;
 
-import net.bukkitlabs.bukkitlabscloud.logger.Logger;
+import net.bukkitlabs.bukkitlabscloud.util.logger.Logger;
 
 public class BukkitLabsCloud {
 
