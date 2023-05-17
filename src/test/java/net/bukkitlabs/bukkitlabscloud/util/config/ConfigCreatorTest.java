@@ -1,6 +1,5 @@
 package net.bukkitlabs.bukkitlabscloud.util.config;
 
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

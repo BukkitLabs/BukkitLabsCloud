@@ -22,7 +22,7 @@ public class BukkitLabsCloud {
         try {
             tempConfigHandler = new ConfigHandler();
             eventHandler.call(new ConfigurationLoadEvent(tempConfigHandler));
-        } catch (IOException|EventCannotBeProcessedException exception) {
+        } catch (IOException | EventCannotBeProcessedException exception) {
             this.logger.log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             tempConfigHandler = null;
             System.exit(0);
