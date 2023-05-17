@@ -4,7 +4,7 @@ import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
-import net.bukkitlabs.bukkitlabscloud.util.logger.Logger;
+import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
