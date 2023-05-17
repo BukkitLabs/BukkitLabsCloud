@@ -10,11 +10,7 @@ public class BukkitLabsCloud {
     private final Logger logger;
     private final ConfigHandler configHandler;
 
-    public static void main(String[] args) {
-        new BukkitLabsCloud();
-    }
-
-    private BukkitLabsCloud(){
+    private BukkitLabsCloud() {
         ConfigHandler tempConfigHandler;
         this.logger = new Logger();
         try {
@@ -25,10 +21,14 @@ public class BukkitLabsCloud {
             System.exit(0);
         }
         this.configHandler = tempConfigHandler;
-        logger.log(Logger.Level.INFO,"Starting BukkitLabsCloud...");
+        logger.log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
     }
 
-    public Logger getLogger(){
+    public static void main(String[] args) {
+        new BukkitLabsCloud();
+    }
+
+    public Logger getLogger() {
         return logger;
     }
 

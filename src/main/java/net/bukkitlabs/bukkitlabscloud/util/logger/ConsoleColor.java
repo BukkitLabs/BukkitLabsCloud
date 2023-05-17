@@ -1,6 +1,6 @@
 package net.bukkitlabs.bukkitlabscloud.util.logger;
 
-public enum ConsoleColor{
+public enum ConsoleColor {
     RESET("\u001B[0m"),
     BLACK("\u001B[30m"),
     RED("\u001B[31m"),
@@ -21,11 +21,11 @@ public enum ConsoleColor{
 
     private final String colorCode;
 
-    ConsoleColor(final String colorCode){
-        this.colorCode=colorCode;
+    ConsoleColor(final String colorCode) {
+        this.colorCode = colorCode;
     }
 
-    public String getColorCode(){
+    public String getColorCode() {
         return colorCode;
     }
 }
