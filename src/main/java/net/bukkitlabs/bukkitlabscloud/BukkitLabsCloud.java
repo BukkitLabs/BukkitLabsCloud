@@ -3,6 +3,7 @@ package net.bukkitlabs.bukkitlabscloud;
 import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
 import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.util.LoopManager;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
 import net.bukkitlabs.bukkitlabscloud.console.Logger;
@@ -33,6 +34,12 @@ public class BukkitLabsCloud {
         setConfigHandler(tempConfigHandler);
         setCommandHandler(new CommandHandler());
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
+    }
+
+    public static void initLoops(){
+        LoopManager loopManager = new LoopManager();
+        loopManager.addLoop(new CommandHandler());
+        loopManager.start();
     }
 
     public static void main(String[] args) {
