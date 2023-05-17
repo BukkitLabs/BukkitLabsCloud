@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.config;
+package net.bukkitlabs.bukkitlabscloud.util.config;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
