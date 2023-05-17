@@ -11,11 +11,11 @@ public class EventHandler {
 
     private final List<Listener> listenerList = new LinkedList<>();
 
-    private void registerListener(@NotNull final Listener listener) {
+    public void registerListener(@NotNull final Listener listener) {
         listenerList.add(listener);
     }
 
-    private void call(@NotNull final Event event) throws EventCannotBeProcessedException {
+    public void call(@NotNull final Event event) throws EventCannotBeProcessedException {
         if (event instanceof Cancelable cancelable) {
             this.cancelableCall(cancelable);
             return;
@@ -24,7 +24,7 @@ public class EventHandler {
             for (final Method method : listener.getClass().getDeclaredMethods()) {
                 if (!method.isAnnotationPresent(Callable.class) ||
                         method.getParameterTypes().length != 1 ||
-                        method.getParameterTypes()[0].equals(event.getClass())) continue;
+                        !method.getParameterTypes()[0].equals(event.getClass())) continue;
                 try {
                     method.invoke(listener, event);
                 } catch (IllegalAccessException | InvocationTargetException exception) {
@@ -40,8 +40,8 @@ public class EventHandler {
             for (final Method method : listener.getClass().getDeclaredMethods()) {
                 if (!method.isAnnotationPresent(Callable.class) ||
                         method.getParameterTypes().length != 1 ||
-                        method.getParameterTypes()[0].equals(event.getClass()) ||
-                        (canceled && !method.getAnnotation(Callable.class).ignoreCancelled()) ) continue;
+                        !method.getParameterTypes()[0].equals(event.getClass()) ||
+                        (canceled && !method.getAnnotation(Callable.class).ignoreCancelled())) continue;
                 try {
                     method.invoke(listener, event);
                     if (event.isCanceled()) canceled = true;
