@@ -1,5 +1,6 @@
 package net.bukkitlabs.bukkitlabscloud.util.logger;
 
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,8 +12,8 @@ public class Logger{
 
     private final String logFolder="/logs/";
     private final String logFileExtension=".log";
-    private final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
-    private final SimpleDateFormat timeFormat=new SimpleDateFormat("HH-mm-ss");
+    private final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd"); // TODO: 17.05.2023 Set dateFormat with ConfigurationLoadEvent
+    private final SimpleDateFormat timeFormat=new SimpleDateFormat("HH-mm-ss"); // TODO: 17.05.2023 Set timeFormat with ConfigurationLoadEvent
     private PrintWriter writer;
 
     public Logger(){
@@ -30,9 +31,12 @@ public class Logger{
         return timeFormat.format(now);
     }
 
-    private void writeLog(final String logMessage){
+    private void writeLog(@NotNull final String logMessage){
         writer.println(logMessage);
-        System.out.println(logMessage);
+    }
+
+    private void printLog(@NotNull final String consoleMessage){
+        System.out.println(consoleMessage);
     }
 
     public void close(){
@@ -60,15 +64,17 @@ public class Logger{
         return Long.toString(System.nanoTime());
     }
 
-    public void log(final Level level,final String message){
+    public void log(@NotNull final Level level,@NotNull final String message){
+        printLog(generateConsoleMessage(level,message));
         writeLog(generateLogMessage(level,message));
     }
 
-    public void log(final Level level,final String message,final Exception exception){
+    public void log(@NotNull final Level level,@NotNull final String message,@NotNull final Exception exception){
+        printLog(generateConsoleMessage(level,message,exception));
         writeLog(generateLogMessage(level,message,exception));
     }
 
-    private String generateLogMessage(final Level level,final String message){
+    private String generateConsoleMessage(@NotNull final Level level,@NotNull final String message){
         final StringBuilder stringBuilder = new StringBuilder()
                 .append(level.getConsoleColor().getColorCode())
                 .append("[")
@@ -83,7 +89,7 @@ public class Logger{
         return stringBuilder.toString();
     }
 
-    private String generateLogMessage(final Level level,final String message,final Exception exception){
+    private String generateConsoleMessage(@NotNull final Level level,@NotNull final String message,@NotNull final Exception exception){
         final StringBuilder stringBuilder= new StringBuilder()
                 .append(level.getConsoleColor().getColorCode())
                 .append("[")
@@ -103,6 +109,36 @@ public class Logger{
         return stringBuilder.toString();
     }
 
+    private String generateLogMessage(@NotNull final Level level,@NotNull final String message){
+        final StringBuilder stringBuilder = new StringBuilder()
+                .append("[")
+                .append(getTime())
+                .append("]")
+                .append(" ")
+                .append(level.getPrefix())
+                .append(" ")
+                .append(message);
+
+        return stringBuilder.toString();
+    }
+
+    private String generateLogMessage(@NotNull final Level level,@NotNull final String message,@NotNull final Exception exception){
+        final StringBuilder stringBuilder= new StringBuilder()
+                .append("[")
+                .append(getTime())
+                .append("]")
+                .append(" ")
+                .append(level.getPrefix())
+                .append(" ")
+                .append(message)
+                .append(System.lineSeparator())
+                .append(exception.toString())
+                .append(System.lineSeparator());
+        for(StackTraceElement stackTraceElement: exception.getStackTrace()){
+            stringBuilder.append(stackTraceElement.toString()).append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
 
     public enum Level{
         INFO("[INFO]",ConsoleColor.WHITE),
@@ -110,7 +146,7 @@ public class Logger{
         ERROR("[ERROR]",ConsoleColor.RED),
         WARN("[WARN]",ConsoleColor.YELLOW);
 
-        Level(final String prefix,final ConsoleColor consoleColor){
+        Level(@NotNull final String prefix,@NotNull final ConsoleColor consoleColor){
             this.prefix=prefix;
             this.consoleColor=consoleColor;
         }
