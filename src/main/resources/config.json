@@ -1,3 +1,6 @@
 {
-  "dateFormat": "yyyy-MM-dd"
+  "logger": {
+    "dateFormat": "yyyy-MM-dd",
+    "timeFormat": "HH:mm:ss"
+  }
 }
