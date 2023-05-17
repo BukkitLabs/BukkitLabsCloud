@@ -4,8 +4,15 @@ import com.sun.net.httpserver.HttpServer;
 import fi.iki.elonen.NanoHTTPD;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,13 +22,77 @@ import java.util.List;
 import java.util.Map;
 
 public class WebsiteManager {
-    private static final String ROOT_PATH = "/http/dist/";
-    private static final String ERROR_PAGE = "/http/dist/404/index.html";
-
+    private static final String websitePath = "/http/dist/";
     private Map<String, WebsiteHandler> websiteHandlers;
+    private WebSocketServer webSocketServer;
 
     public WebsiteManager() {
         websiteHandlers = new HashMap<>();
+        try{
+            initializeWebSocketServer();
+        }catch(UnknownHostException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void initializeWebSocketServer() throws UnknownHostException{
+        webSocketServer = new WebSocketServer() {
+            @Override
+            public void onOpen(WebSocket conn, ClientHandshake handshake) {
+                // Verbindung zu einem WebSocket-Client hergestellt
+            }
+
+            @Override
+            public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+                // Verbindung zu einem WebSocket-Client geschlossen
+            }
+
+            @Override
+            public void onMessage(WebSocket conn,String message) {
+                // Nachricht von einem WebSocket-Client empfangen
+                // Hier können Sie auf das JavaScript-Event reagieren und den HTML-Inhalt bearbeiten
+
+                // Führen Sie die gewünschte Aktion in Java aus und aktualisieren Sie den HTML-Inhalt
+
+                // Senden Sie den aktualisierten HTML-Inhalt an alle WebSocket-Clients
+
+                try{
+                    broadcast(message);
+                }catch(JSONException e){
+                    throw new RuntimeException(e);
+                }
+            }
+
+            private void broadcast(String message) throws JSONException{
+                JSONObject jsonMessage=new JSONObject();
+                jsonMessage.put("content",message);
+
+                for(WebSocket client: webSocketServer.connections()){
+                    client.send(jsonMessage.toString());
+                }
+            }
+
+            @Override
+            public void onMessage(WebSocket conn, ByteBuffer message) {
+                // ByteBuffer-Nachricht von einem WebSocket-Client empfangen
+            }
+
+            @Override
+            public void onError(WebSocket conn, Exception ex) {
+                // Fehler in der WebSocket-Verbindung
+            }
+            /*
+            @Override
+            public void onStart() {
+                // WebSocket-Server gestartet
+
+            }
+
+             */
+        };
+
+        webSocketServer.start();
     }
 
     public void startWebsite(String path) {
@@ -30,7 +101,7 @@ public class WebsiteManager {
             return;
         }
 
-        String fullPath = ROOT_PATH + path;
+        String fullPath = websitePath + path;
         Path websitePath = Paths.get(fullPath);
 
         if (!Files.exists(websitePath)) {
@@ -79,7 +150,9 @@ public class WebsiteManager {
         public Response serve(IHTTPSession session) {
             String uri = session.getUri();
             String filePath = websitePath + uri;
-
+            if (uri.equals("/websocket")) {
+                return newFixedLengthResponse(Response.Status.SWITCH_PROTOCOL, "application/json", null);
+            }
             Path requestedPath = Paths.get(filePath);
             if (Files.exists(requestedPath) && !Files.isDirectory(requestedPath)) {
                 try {
@@ -111,7 +184,7 @@ public class WebsiteManager {
         }
 
         private String getErrorPageContent() {
-            String errorPagePath = ROOT_PATH + "404/index.html";
+            String errorPagePath = websitePath + "404/index.html";
             try {
                 return new String(Files.readAllBytes(Paths.get(errorPagePath)));
             } catch (IOException e) {
