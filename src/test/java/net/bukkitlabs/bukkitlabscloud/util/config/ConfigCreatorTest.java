@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.config;
+package net.bukkitlabs.bukkitlabscloud.util.config;
 
 import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
 import org.junit.jupiter.api.BeforeEach;

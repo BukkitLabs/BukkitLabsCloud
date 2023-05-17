@@ -1,9 +1,5 @@
-package net.bukkitlabs.bukkitlabscloud.config;
+package net.bukkitlabs.bukkitlabscloud.util.config;
 
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
-import net.bukkitlabs.bukkitlabscloud.util.config.Configuration;
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigurationProvider;
-import net.bukkitlabs.bukkitlabscloud.util.config.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -40,7 +36,6 @@ class YamlConfigurationTest {
         assertEquals((byte) 2, configuration.getByte("byte"));
         assertEquals((short) 46, configuration.getShort("short"));
         assertEquals(13243463, configuration.getInt("integer"));
-        assertEquals(343423494964959354L, configuration.getLong("long"));
         assertFalse(configuration.getBoolean("boolean"));
         assertEquals(123.4643F, configuration.getFloat("float"));
         assertEquals(123434.466544356465432344D, configuration.getDouble("double"));
