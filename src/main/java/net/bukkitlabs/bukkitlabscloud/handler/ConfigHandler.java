@@ -17,9 +17,9 @@ public class ConfigHandler {
     private Configuration generalConfiguration;
 
     public ConfigHandler() throws IOException {
-        this.generalConfigurationFile = Paths.get("", "config.json").toFile();
+        this.generalConfigurationFile = Paths.get(".", "config.json").toFile();
         if (!generalConfigurationFile.exists()) {
-            final ConfigCreator creator = new ConfigCreator(Paths.get(""));
+            final ConfigCreator creator = new ConfigCreator(Paths.get("."));
             this.generalConfigurationFile = creator.copyDefaultFile(Paths.get("config.json"));
         }
         this.reloadConfigurations();
@@ -31,5 +31,9 @@ public class ConfigHandler {
 
     public void saveConfigurations() throws IOException {
         this.provider.save(this.generalConfiguration, this.generalConfigurationFile);
+    }
+
+    public Configuration getGeneralConfiguration(){
+        return generalConfiguration;
     }
 }
