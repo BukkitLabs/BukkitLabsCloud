@@ -1,6 +1,7 @@
 package net.bukkitlabs.bukkitlabscloud;
 
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
 import net.bukkitlabs.bukkitlabscloud.util.logger.Logger;
 
 import java.io.IOException;
@@ -8,9 +9,11 @@ import java.io.IOException;
 public class BukkitLabsCloud {
 
     private final Logger logger;
+    private final EventHandler eventHandler;
     private final ConfigHandler configHandler;
 
     private BukkitLabsCloud() {
+        eventHandler = new EventHandler();
         ConfigHandler tempConfigHandler;
         this.logger = new Logger();
         try {
@@ -34,5 +37,9 @@ public class BukkitLabsCloud {
 
     public ConfigHandler getConfigHandler() {
         return configHandler;
+    }
+
+    public EventHandler getEventHandler() {
+        return eventHandler;
     }
 }
