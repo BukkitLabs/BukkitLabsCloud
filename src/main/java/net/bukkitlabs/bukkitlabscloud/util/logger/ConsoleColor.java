@@ -1,5 +1,7 @@
 package net.bukkitlabs.bukkitlabscloud.util.logger;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum ConsoleColor {
     RESET("\u001B[0m"),
     BLACK("\u001B[30m"),
@@ -21,10 +23,11 @@ public enum ConsoleColor {
 
     private final String colorCode;
 
-    ConsoleColor(final String colorCode) {
+    ConsoleColor(@NotNull final String colorCode) {
         this.colorCode = colorCode;
     }
 
+    @NotNull
     public String getColorCode() {
         return colorCode;
     }

@@ -9,12 +9,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Logger implements Listener {
 
-    private final String logFolder = "/logs/";
+    private final String logFolder = "logs";
     private final String logFileExtension = ".log";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH-mm-ss");
@@ -36,13 +37,15 @@ public class Logger implements Listener {
         }
     }
 
+    @NotNull
     private String getDate() {
-        Date now = new Date();
+        final Date now = new Date();
         return dateFormat.format(now);
     }
 
+    @NotNull
     private String getTime() {
-        Date now = new Date();
+        final Date now = new Date();
         return timeFormat.format(now);
     }
 
@@ -59,24 +62,23 @@ public class Logger implements Listener {
     }
 
     private void createLogFolder() {
-        File file = new File(this.logFolder);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
+        final File file = Paths.get(this.logFolder).toFile();
+        if (!file.exists()) file.mkdirs();
     }
 
     private void createLogFile() {
         final String logFileName = getDate() + "-" + generateLogId() + logFileExtension;
-        final File file = new File(logFolder + logFileName);
+        final File file = Paths.get(this.logFolder, logFileName).toFile();
         try {
             file.createNewFile();
-            FileWriter fileWriter = new FileWriter(logFolder + logFileName, true);
+            final FileWriter fileWriter = new FileWriter(logFolder + logFileName, true);
             writer = new PrintWriter(fileWriter, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @NotNull
     private String generateLogId() {
         return Long.toString(System.nanoTime());
     }
@@ -91,6 +93,7 @@ public class Logger implements Listener {
         writeLog(generateLogMessage(level, message, exception));
     }
 
+    @NotNull
     private String generateConsoleMessage(@NotNull final Level level, @NotNull final String message) {
         final StringBuilder stringBuilder = new StringBuilder()
                 .append(level.getConsoleColor().getColorCode())
@@ -106,6 +109,7 @@ public class Logger implements Listener {
         return stringBuilder.toString();
     }
 
+    @NotNull
     private String generateConsoleMessage(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception) {
         final StringBuilder stringBuilder = new StringBuilder()
                 .append(level.getConsoleColor().getColorCode())
@@ -126,6 +130,7 @@ public class Logger implements Listener {
         return stringBuilder.toString();
     }
 
+    @NotNull
     private String generateLogMessage(@NotNull final Level level, @NotNull final String message) {
         final StringBuilder stringBuilder = new StringBuilder()
                 .append("[")
@@ -139,6 +144,7 @@ public class Logger implements Listener {
         return stringBuilder.toString();
     }
 
+    @NotNull
     private String generateLogMessage(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception) {
         final StringBuilder stringBuilder = new StringBuilder()
                 .append("[")
@@ -171,14 +177,14 @@ public class Logger implements Listener {
             this.consoleColor = consoleColor;
         }
 
+        @NotNull
         public String getPrefix() {
             return prefix;
         }
 
+        @NotNull
         public ConsoleColor getConsoleColor() {
             return consoleColor;
         }
     }
-
-
 }
