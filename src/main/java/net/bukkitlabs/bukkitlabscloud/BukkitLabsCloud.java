@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public class BukkitLabsCloud {
 
+    private static BukkitLabsCloud instance;
     private final Logger logger;
     private final ConfigHandler configHandler;
 
     private BukkitLabsCloud() {
+        instance=this;
         ConfigHandler tempConfigHandler;
         this.logger = new Logger();
         try {
@@ -34,5 +36,8 @@ public class BukkitLabsCloud {
 
     public ConfigHandler getConfigHandler() {
         return configHandler;
+    }
+    public static BukkitLabsCloud getInstance(){
+        return instance;
     }
 }
