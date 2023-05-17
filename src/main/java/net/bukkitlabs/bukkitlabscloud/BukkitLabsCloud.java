@@ -16,13 +16,13 @@ public class BukkitLabsCloud {
     private static ConfigHandler configHandler;
 
     private BukkitLabsCloud() {
-        setEventHandler(new PacketHandler());
+        setPacketHandler(new PacketHandler());
         ConfigHandler tempConfigHandler;
         setLogger(new Logger());
-        getEventHandler().registerListener(getLogger());
+        getPacketHandler().registerListener(getLogger());
         try {
             tempConfigHandler = new ConfigHandler();
-            getEventHandler().call(new ConfigurationLoadPacket(tempConfigHandler));
+            getPacketHandler().call(new ConfigurationLoadPacket(tempConfigHandler));
         } catch (IOException | PacketCannotBeProcessedException exception) {
             getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             tempConfigHandler = null;
@@ -46,11 +46,11 @@ public class BukkitLabsCloud {
     }
 
     @NotNull
-    public static PacketHandler getEventHandler() {
+    public static PacketHandler getPacketHandler() {
         return packetHandler;
     }
 
-    private static void setEventHandler(@NotNull PacketHandler packetHandler) {
+    private static void setPacketHandler(@NotNull PacketHandler packetHandler) {
         BukkitLabsCloud.packetHandler = packetHandler;
     }
 
