@@ -1,6 +1,6 @@
-package net.bukkitlabs;
+package net.bukkitlabs.bukkitlabscloud;
 
-public class Main {
+public class BukkitLabsCloud {
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
