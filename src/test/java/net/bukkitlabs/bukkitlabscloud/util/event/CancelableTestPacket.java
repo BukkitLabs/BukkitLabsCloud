@@ -1,13 +1,15 @@
 package net.bukkitlabs.bukkitlabscloud.util.event;
 
+import net.bukkitlabs.bukkitlabscloud.util.event.api.Cancelable;
+import net.bukkitlabs.bukkitlabscloud.util.event.api.Packet;
 import org.jetbrains.annotations.NotNull;
 
-public class AnotherCancelableTestEvent extends Event implements Cancelable {
+public class CancelableTestPacket extends Packet implements Cancelable {
 
     private String testValue;
     private boolean canceled;
 
-    public AnotherCancelableTestEvent(@NotNull String testValue) {
+    public CancelableTestPacket(@NotNull String testValue) {
         this.testValue = testValue;
     }
 

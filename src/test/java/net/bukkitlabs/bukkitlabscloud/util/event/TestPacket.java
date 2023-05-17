@@ -1,12 +1,13 @@
 package net.bukkitlabs.bukkitlabscloud.util.event;
 
+import net.bukkitlabs.bukkitlabscloud.util.event.api.Packet;
 import org.jetbrains.annotations.NotNull;
 
-public class TestEvent extends Event {
+public class TestPacket extends Packet {
 
     private String testValue;
 
-    public TestEvent(@NotNull String testValue) {
+    public TestPacket(@NotNull String testValue) {
         this.testValue = testValue;
     }
 

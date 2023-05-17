@@ -1,9 +1,9 @@
 package net.bukkitlabs.bukkitlabscloud;
 
-import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadPacket;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
-import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
-import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
+import net.bukkitlabs.bukkitlabscloud.util.event.PacketCannotBeProcessedException;
+import net.bukkitlabs.bukkitlabscloud.util.event.PacketHandler;
 import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,18 +12,18 @@ import java.io.IOException;
 public class BukkitLabsCloud {
 
     private static Logger logger;
-    private static EventHandler eventHandler;
+    private static PacketHandler packetHandler;
     private static ConfigHandler configHandler;
 
     private BukkitLabsCloud() {
-        setEventHandler(new EventHandler());
+        setEventHandler(new PacketHandler());
         ConfigHandler tempConfigHandler;
         setLogger(new Logger());
         getEventHandler().registerListener(getLogger());
         try {
             tempConfigHandler = new ConfigHandler();
-            getEventHandler().call(new ConfigurationLoadEvent(tempConfigHandler));
-        } catch (IOException | EventCannotBeProcessedException exception) {
+            getEventHandler().call(new ConfigurationLoadPacket(tempConfigHandler));
+        } catch (IOException | PacketCannotBeProcessedException exception) {
             getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             tempConfigHandler = null;
             System.exit(0);
@@ -46,12 +46,12 @@ public class BukkitLabsCloud {
     }
 
     @NotNull
-    public static EventHandler getEventHandler() {
-        return eventHandler;
+    public static PacketHandler getEventHandler() {
+        return packetHandler;
     }
 
-    private static void setEventHandler(@NotNull EventHandler eventHandler) {
-        BukkitLabsCloud.eventHandler = eventHandler;
+    private static void setEventHandler(@NotNull PacketHandler packetHandler) {
+        BukkitLabsCloud.packetHandler = packetHandler;
     }
 
     @NotNull
