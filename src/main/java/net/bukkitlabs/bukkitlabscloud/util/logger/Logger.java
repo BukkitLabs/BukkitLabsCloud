@@ -71,7 +71,7 @@ public class Logger implements Listener {
         final File file = Paths.get(this.logFolder, logFileName).toFile();
         try {
             file.createNewFile();
-            final FileWriter fileWriter = new FileWriter(logFolder + logFileName, true);
+            final FileWriter fileWriter = new FileWriter(file, true);
             writer = new PrintWriter(fileWriter, true);
         } catch (IOException e) {
             e.printStackTrace();
