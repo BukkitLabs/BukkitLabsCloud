@@ -24,7 +24,7 @@ public final class Configuration {
         this.defaults = defaults;
 
         map.forEach((key, value) -> {
-            String actualKey = (key == null) ? "null" : key.toString();
+            final String actualKey = (key == null) ? "null" : key.toString();
 
             if (!(value instanceof Map valueMap)) {
                 this.self.put(actualKey, value);
@@ -39,7 +39,7 @@ public final class Configuration {
         int index = path.indexOf(SEPARATOR);
         if (index == -1) return this;
 
-        String root = path.substring(0, index);
+        final String root = path.substring(0, index);
         Object section = self.get(root);
         if (section == null) {
             section = new Configuration((defaults == null) ? null : defaults.getSection(root));
@@ -59,7 +59,7 @@ public final class Configuration {
     @Nullable
     @SuppressWarnings("unchecked")
     public <T> T get(@NotNull String path, @Nullable T def) {
-        Configuration section = getSectionFor(path);
+        final Configuration section = getSectionFor(path);
         Object val;
         if (section == this) val = self.get(path);
         else val = section.get(getChild(path), def);
@@ -87,7 +87,7 @@ public final class Configuration {
         if (value instanceof Map map)
             value = new Configuration(map, (defaults == null) ? null : defaults.getSection(path));
 
-        Configuration section = getSectionFor(path);
+        final Configuration section = getSectionFor(path);
         if (section == this) {
             if (value == null) self.remove(path);
             else self.put(path, value);
@@ -97,7 +97,7 @@ public final class Configuration {
     /*------------------------------------------------------------------------*/
     @Nullable
     public Configuration getSection(@NotNull String path) {
-        Object def = getDefault(path);
+        final Object def = getDefault(path);
         return (Configuration) get(path, (def instanceof Configuration) ? def : new Configuration((defaults == null) ? null : defaults.getSection(path)));
     }
 
@@ -113,176 +113,176 @@ public final class Configuration {
 
     /*------------------------------------------------------------------------*/
     public byte getByte(@NotNull String path) {
-        Object def = getDefault(path);
-        return getByte(path, (def instanceof Number number) ? number.byteValue() : (byte) 0);
+        final Object def = getDefault(path);
+        return getByte(path, (def instanceof final Number number) ? number.byteValue() : (byte) 0);
     }
 
     public byte getByte(@NotNull String path, byte def) {
-        Object val = get(path, def);
-        return (val instanceof Number number) ? number.byteValue() : def;
+        final Object val = get(path, def);
+        return (val instanceof final Number number) ? number.byteValue() : def;
     }
 
     @NotNull
     public List<Byte> getByteList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Byte> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Byte> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Number number)
+        for (final Object object : list)
+            if (object instanceof final Number number)
                 result.add(number.byteValue());
 
         return result;
     }
 
     public short getShort(@NotNull String path) {
-        Object def = getDefault(path);
-        return getShort(path, (def instanceof Number number) ? number.shortValue() : (short) 0);
+        final Object def = getDefault(path);
+        return getShort(path, (def instanceof final Number number) ? number.shortValue() : (short) 0);
     }
 
     public short getShort(@NotNull String path, short def) {
-        Object val = get(path, def);
-        return (val instanceof Number number) ? number.shortValue() : def;
+        final Object val = get(path, def);
+        return (val instanceof final Number number) ? number.shortValue() : def;
     }
 
     @NotNull
     public List<Short> getShortList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Short> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Short> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Number number)
+        for (final Object object : list)
+            if (object instanceof final Number number)
                 result.add(number.shortValue());
 
         return result;
     }
 
     public int getInt(@NotNull String path) {
-        Object def = getDefault(path);
-        return getInt(path, (def instanceof Number number) ? number.intValue() : 0);
+        final Object def = getDefault(path);
+        return getInt(path, (def instanceof final Number number) ? number.intValue() : 0);
     }
 
     public int getInt(@NotNull String path, int def) {
-        Object val = get(path, def);
-        return (val instanceof Number number) ? number.intValue() : def;
+        final Object val = get(path, def);
+        return (val instanceof final Number number) ? number.intValue() : def;
     }
 
     @NotNull
     public List<Integer> getIntList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Integer> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Integer> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Number number)
+        for (final Object object : list)
+            if (object instanceof final Number number)
                 result.add(number.intValue());
 
         return result;
     }
 
     public long getLong(@NotNull String path) {
-        Object def = getDefault(path);
-        return getLong(path, (def instanceof Number number) ? number.longValue() : 0);
+        final Object def = getDefault(path);
+        return getLong(path, (def instanceof final Number number) ? number.longValue() : 0);
     }
 
     public long getLong(@NotNull String path, long def) {
-        Object val = get(path, def);
-        return (val instanceof Number number) ? number.longValue() : def;
+        final Object val = get(path, def);
+        return (val instanceof final Number number) ? number.longValue() : def;
     }
 
     @NotNull
     public List<Long> getLongList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Long> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Long> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Number number)
+        for (final Object object : list)
+            if (object instanceof final Number number)
                 result.add(number.longValue());
 
         return result;
     }
 
     public float getFloat(@NotNull String path) {
-        Object def = getDefault(path);
-        return getFloat(path, (def instanceof Number number) ? number.floatValue() : 0);
+        final Object def = getDefault(path);
+        return getFloat(path, (def instanceof final Number number) ? number.floatValue() : 0);
     }
 
     public float getFloat(@NotNull String path, float def) {
-        Object val = get(path, def);
-        return (val instanceof Number number) ? number.floatValue() : def;
+        final Object val = get(path, def);
+        return (val instanceof final Number number) ? number.floatValue() : def;
     }
 
     @NotNull
     public List<Float> getFloatList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Float> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Float> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Number number)
+        for (final Object object : list)
+            if (object instanceof final Number number)
                 result.add(number.floatValue());
 
         return result;
     }
 
     public double getDouble(@NotNull String path) {
-        Object def = getDefault(path);
-        return getDouble(path, (def instanceof Number number) ? number.doubleValue() : 0);
+        final Object def = getDefault(path);
+        return getDouble(path, (def instanceof final Number number) ? number.doubleValue() : 0);
     }
 
     public double getDouble(@NotNull String path, double def) {
-        Object val = get(path, def);
-        return (val instanceof Number number) ? number.doubleValue() : def;
+        final Object val = get(path, def);
+        return (val instanceof final Number number) ? number.doubleValue() : def;
     }
 
     @NotNull
     public List<Double> getDoubleList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Double> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Double> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Number number)
+        for (final Object object : list)
+            if (object instanceof final Number number)
                 result.add(number.doubleValue());
 
         return result;
     }
 
     public boolean getBoolean(@NotNull String path) {
-        Object def = getDefault(path);
-        return getBoolean(path, (def instanceof Boolean bool) && bool);
+        final Object def = getDefault(path);
+        return getBoolean(path, (def instanceof final Boolean bool) && bool);
     }
 
     public boolean getBoolean(@NotNull String path, boolean def) {
-        Object val = get(path, def);
-        return (val instanceof Boolean bool) ? bool : def;
+        final Object val = get(path, def);
+        return (val instanceof final Boolean bool) ? bool : def;
     }
 
     @NotNull
     public List<Boolean> getBooleanList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Boolean> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Boolean> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Boolean bool)
+        for (final Object object : list)
+            if (object instanceof final Boolean bool)
                 result.add(bool);
 
         return result;
     }
 
     public char getChar(@NotNull String path) {
-        Object def = getDefault(path);
-        return getChar(path, (def instanceof Character character) ? character : '\u0000');
+        final Object def = getDefault(path);
+        return getChar(path, (def instanceof final Character character) ? character : '\u0000');
     }
 
     public char getChar(@NotNull String path, char def) {
-        Object val = get(path, def);
-        return (val instanceof Character character) ? character : def;
+        final Object val = get(path, def);
+        return (val instanceof final Character character) ? character : def;
     }
 
     @NotNull
     public List<Character> getCharList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<Character> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<Character> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof Character character)
+        for (final Object object : list)
+            if (object instanceof final Character character)
                 result.add(character);
 
         return result;
@@ -290,23 +290,23 @@ public final class Configuration {
 
     @NotNull
     public String getString(@NotNull String path) {
-        Object def = getDefault(path);
-        return Objects.requireNonNull(getString(path, (def instanceof String string) ? string : ""));
+        final Object def = getDefault(path);
+        return Objects.requireNonNull(getString(path, (def instanceof final String string) ? string : ""));
     }
 
     @Nullable
     public String getString(@NotNull String path, @Nullable String def) {
-        Object val = get(path, def);
-        return (val instanceof String string) ? string : def;
+        final Object val = get(path, def);
+        return (val instanceof final String string) ? string : def;
     }
 
     @NotNull
     public List<String> getStringList(@NotNull String path) {
-        List<?> list = getList(path);
-        List<String> result = new ArrayList<>();
+        final List<?> list = getList(path);
+        final List<String> result = new ArrayList<>();
 
-        for (Object object : list)
-            if (object instanceof String string)
+        for (final Object object : list)
+            if (object instanceof final String string)
                 result.add(string);
 
         return result;
@@ -314,12 +314,12 @@ public final class Configuration {
 
     /*------------------------------------------------------------------------*/
     public List<?> getList(@NotNull String path) {
-        Object def = getDefault(path);
+        final Object def = getDefault(path);
         return getList(path, (def instanceof List<?>) ? (List<?>) def : Collections.emptyList());
     }
 
     public List<?> getList(@NotNull String path, @NotNull List<?> def) {
-        List<?> val = get(path, def);
+        final List<?> val = get(path, def);
         return (val != null) ? val : def;
     }
 }

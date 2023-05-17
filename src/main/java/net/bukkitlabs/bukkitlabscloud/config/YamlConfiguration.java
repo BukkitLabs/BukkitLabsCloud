@@ -14,12 +14,13 @@ import java.util.Map;
 
 public class YamlConfiguration extends ConfigurationProvider {
 
+    @NotNull
     private final ThreadLocal<Yaml> yaml = ThreadLocal.withInitial(() -> {
-        Representer representer = new Representer() {{
+        final Representer representer = new Representer() {{
             representers.put(Configuration.class, data -> represent(((Configuration) data).self));
         }};
 
-        DumperOptions options = new DumperOptions();
+        final DumperOptions options = new DumperOptions();
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
         return new Yaml(new Constructor(), representer, options);
@@ -27,7 +28,7 @@ public class YamlConfiguration extends ConfigurationProvider {
 
     @Override
     public void save(@NotNull Configuration config, @NotNull File file) throws IOException {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
+        try (final Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             save(config, writer);
         }
     }
@@ -46,7 +47,7 @@ public class YamlConfiguration extends ConfigurationProvider {
     @Override
     @NotNull
     public Configuration load(@NotNull File file, @Nullable Configuration defaults) throws IOException {
-        try (FileInputStream is = new FileInputStream(file)) {
+        try (final FileInputStream is = new FileInputStream(file)) {
             return load(is, defaults);
         }
     }

@@ -18,7 +18,7 @@ public class JsonConfiguration extends ConfigurationProvider {
 
     @Override
     public void save(@NotNull Configuration config, @NotNull File file) throws IOException {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
+        try (final Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             save(config, writer);
         }
     }
@@ -37,7 +37,7 @@ public class JsonConfiguration extends ConfigurationProvider {
     @Override
     @NotNull
     public Configuration load(@NotNull File file, @Nullable Configuration defaults) throws IOException {
-        try (FileInputStream is = new FileInputStream(file)) {
+        try (final FileInputStream is = new FileInputStream(file)) {
             return load(is, defaults);
         }
     }
