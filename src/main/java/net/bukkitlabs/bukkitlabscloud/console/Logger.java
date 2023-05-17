@@ -20,7 +20,7 @@ public class Logger implements Listener {
     private final String logFolder = "logs";
     private final String logFileExtension = ".log";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH-mm-ss");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private PrintWriter writer;
 
     public Logger() {
