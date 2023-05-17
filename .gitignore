@@ -11,6 +11,7 @@ target/
 .idea/sonarlint/
 .idea/encodings.xml
 .idea/misc.xml
+dependency-reduced-pom.xml
 *.iws
 *.iml
 *.ipr

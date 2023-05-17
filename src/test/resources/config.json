@@ -1,0 +1,41 @@
+{
+  "byte": 2,
+  "short": 46,
+  "integer": 13243463,
+  "long": 343423494964959354,
+  "boolean": false,
+  "float": 123.4643,
+  "double": 123434.46654435646,
+  "string": "Hello World",
+  "lists": {
+    "ints": [
+      12,
+      -24,
+      32435
+    ],
+    "floats": [
+      3543.3543,
+      456.535643,
+      3.43345,
+      3443.533
+    ]
+  },
+  "developerList": [
+    {
+      "id": 408,
+      "name": "Asedem",
+      "personality": {
+        "id": 409,
+        "name": "Simon"
+      }
+    },
+    {
+      "id": 701,
+      "name": "FinnPlsm",
+      "personality": {
+        "id": 702,
+        "name": "Finn"
+      }
+    }
+  ]
+}
