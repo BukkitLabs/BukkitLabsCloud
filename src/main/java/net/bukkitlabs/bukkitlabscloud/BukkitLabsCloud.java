@@ -1,5 +1,6 @@
 package net.bukkitlabs.bukkitlabscloud;
 
+import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
 import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
@@ -14,6 +15,7 @@ public class BukkitLabsCloud {
     private static Logger logger;
     private static EventHandler eventHandler;
     private static ConfigHandler configHandler;
+    private static CommandHandler commandHandler;
 
     private BukkitLabsCloud() {
         setEventHandler(new EventHandler());
@@ -29,6 +31,7 @@ public class BukkitLabsCloud {
             System.exit(0);
         }
         setConfigHandler(tempConfigHandler);
+        setCommandHandler(new CommandHandler());
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
     }
 
@@ -61,5 +64,13 @@ public class BukkitLabsCloud {
 
     private static void setConfigHandler(@NotNull ConfigHandler configHandler) {
         BukkitLabsCloud.configHandler = configHandler;
+    }
+
+    public static CommandHandler getCommandHandler(){
+        return commandHandler;
+    }
+
+    private static void setCommandHandler(CommandHandler commandHandler){
+        BukkitLabsCloud.commandHandler=commandHandler;
     }
 }
