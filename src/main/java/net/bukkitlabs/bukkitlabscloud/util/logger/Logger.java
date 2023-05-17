@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// TODO: 17.05.23 Implement that older logs get comprimized (lastest.log)
 public class Logger implements Listener {
 
     private final String logFolder = "logs";
