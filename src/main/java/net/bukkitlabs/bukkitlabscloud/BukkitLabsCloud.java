@@ -1,6 +1,8 @@
 package net.bukkitlabs.bukkitlabscloud;
 
+import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
 import net.bukkitlabs.bukkitlabscloud.util.logger.Logger;
 
@@ -16,9 +18,11 @@ public class BukkitLabsCloud {
         eventHandler = new EventHandler();
         ConfigHandler tempConfigHandler;
         this.logger = new Logger();
+        eventHandler.registerListener(logger);
         try {
             tempConfigHandler = new ConfigHandler();
-        } catch (IOException exception) {
+            eventHandler.call(new ConfigurationLoadEvent(tempConfigHandler));
+        } catch (IOException|EventCannotBeProcessedException exception) {
             this.logger.log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             tempConfigHandler = null;
             System.exit(0);
