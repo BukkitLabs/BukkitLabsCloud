@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class Event {
 
-    private String name;
     private final boolean async;
+    private String name;
 
     protected Event() {
         this(false);

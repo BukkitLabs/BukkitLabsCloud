@@ -21,12 +21,12 @@ public class CancelableTestEvent extends Event implements Cancelable {
     }
 
     @Override
-    public void setCanceled(boolean canceled) {
-        this.canceled = canceled;
+    public boolean isCanceled() {
+        return canceled;
     }
 
     @Override
-    public boolean isCanceled() {
-        return canceled;
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
     }
 }

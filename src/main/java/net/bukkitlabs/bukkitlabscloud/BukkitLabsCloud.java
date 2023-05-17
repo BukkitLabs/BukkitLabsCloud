@@ -5,43 +5,61 @@ import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
 import net.bukkitlabs.bukkitlabscloud.util.logger.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
 public class BukkitLabsCloud {
 
-    private static BukkitLabsCloud instance;
-    private final Logger logger;
-    private final EventHandler eventHandler;
-    private final ConfigHandler configHandler;
+    private static Logger logger;
+    private static EventHandler eventHandler;
+    private static ConfigHandler configHandler;
 
     private BukkitLabsCloud() {
-        instance=this;
-        eventHandler = new EventHandler();
+        setEventHandler(new EventHandler());
         ConfigHandler tempConfigHandler;
-        this.logger = new Logger();
-        eventHandler.registerListener(logger);
+        setLogger(new Logger());
+        getEventHandler().registerListener(getLogger());
         try {
             tempConfigHandler = new ConfigHandler();
-            eventHandler.call(new ConfigurationLoadEvent(tempConfigHandler));
-        } catch (IOException|EventCannotBeProcessedException exception) {
-            this.logger.log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
+            getEventHandler().call(new ConfigurationLoadEvent(tempConfigHandler));
+        } catch (IOException | EventCannotBeProcessedException exception) {
+            getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             tempConfigHandler = null;
             System.exit(0);
         }
-        this.configHandler = tempConfigHandler;
-        logger.log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
+        setConfigHandler(tempConfigHandler);
+        getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
     }
 
     public static void main(String[] args) {
         new BukkitLabsCloud();
     }
 
-    public Logger getLogger() {
+    @NotNull
+    public static Logger getLogger() {
         return logger;
     }
 
-    public ConfigHandler getConfigHandler() {
+    private static void setLogger(@NotNull Logger logger) {
+        BukkitLabsCloud.logger = logger;
+    }
+
+    @NotNull
+    public static EventHandler getEventHandler() {
+        return eventHandler;
+    }
+
+    private static void setEventHandler(@NotNull EventHandler eventHandler) {
+        BukkitLabsCloud.eventHandler = eventHandler;
+    }
+
+    @NotNull
+    public static ConfigHandler getConfigHandler() {
         return configHandler;
+    }
+
+    private static void setConfigHandler(@NotNull ConfigHandler configHandler) {
+        BukkitLabsCloud.configHandler = configHandler;
     }
 }

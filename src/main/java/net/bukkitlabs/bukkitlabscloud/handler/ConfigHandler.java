@@ -33,7 +33,7 @@ public class ConfigHandler {
         this.provider.save(this.generalConfiguration, this.generalConfigurationFile);
     }
 
-    public Configuration getGeneralConfiguration(){
+    public Configuration getGeneralConfiguration() {
         return generalConfiguration;
     }
 }
