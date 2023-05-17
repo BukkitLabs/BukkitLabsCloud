@@ -26,40 +26,40 @@ public abstract class ConfigurationProvider {
     }
 
     @Nullable
-    public static ConfigurationProvider getProvider(Class<? extends ConfigurationProvider> provider) {
+    public static ConfigurationProvider getProvider(@NotNull final Class<? extends ConfigurationProvider> provider) {
         return providers.getOrDefault(provider, null);
     }
 
-    public static void registerCustomConfiguration(@NotNull Class<? extends ConfigurationProvider> providerClass, @NotNull ConfigurationProvider provider) {
+    public static void registerCustomConfiguration(@NotNull final Class<? extends ConfigurationProvider> providerClass, @NotNull final ConfigurationProvider provider) {
         providers.put(providerClass, provider);
     }
 
     /*------------------------------------------------------------------------*/
-    public abstract void save(@NotNull Configuration config, @NotNull File file) throws IOException;
+    public abstract void save(@NotNull final Configuration config, @NotNull final File file) throws IOException;
 
-    public abstract void save(@NotNull Configuration config, @NotNull Writer writer);
-
-    @NotNull
-    public abstract Configuration load(@NotNull File file) throws IOException;
+    public abstract void save(@NotNull final Configuration config, @NotNull final Writer writer);
 
     @NotNull
-    public abstract Configuration load(@NotNull File file, @Nullable Configuration defaults) throws IOException;
+    public abstract Configuration load(@NotNull final File file) throws IOException;
 
     @NotNull
-    public abstract Configuration load(@NotNull Reader reader);
+    public abstract Configuration load(@NotNull final File file, @Nullable final Configuration defaults) throws IOException;
 
     @NotNull
-    public abstract Configuration load(@NotNull Reader reader, @Nullable Configuration defaults);
+    public abstract Configuration load(@NotNull final Reader reader);
 
     @NotNull
-    public abstract Configuration load(@NotNull InputStream is);
+    public abstract Configuration load(@NotNull final Reader reader, @Nullable final Configuration defaults);
 
     @NotNull
-    public abstract Configuration load(@NotNull InputStream is, @Nullable Configuration defaults);
+    public abstract Configuration load(@NotNull final InputStream is);
 
     @NotNull
-    public abstract Configuration load(@NotNull String string);
+    public abstract Configuration load(@NotNull final InputStream is, @Nullable final Configuration defaults);
 
     @NotNull
-    public abstract Configuration load(@NotNull String string, @Nullable Configuration defaults);
+    public abstract Configuration load(@NotNull final String string);
+
+    @NotNull
+    public abstract Configuration load(@NotNull final String string, @Nullable final Configuration defaults);
 }

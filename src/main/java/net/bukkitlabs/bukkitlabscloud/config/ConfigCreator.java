@@ -14,17 +14,17 @@ public class ConfigCreator {
 
     private final Path dataFolder;
 
-    public ConfigCreator(@NotNull Path dataFolder) {
+    public ConfigCreator(@NotNull final Path dataFolder) {
         this.dataFolder = dataFolder;
     }
 
     @NotNull
-    public File copyDefaultFile(@NotNull Path fromPath) throws IOException {
+    public File copyDefaultFile(@NotNull final Path fromPath) throws IOException {
         return copyDefaultFile(fromPath, fromPath);
     }
 
     @NotNull
-    public File copyDefaultFile(@NotNull Path fromPath, @NotNull Path toPath) throws IOException {
+    public File copyDefaultFile(@NotNull final Path fromPath, @NotNull final Path toPath) throws IOException {
         final File file = createFile(toPath);
 
         if (file.length() <= 2) {
@@ -38,7 +38,7 @@ public class ConfigCreator {
     }
 
     @NotNull
-    public File createFile(@NotNull Path filePath) throws IOException {
+    public File createFile(@NotNull final Path filePath) throws IOException {
         final Path configFile = dataFolder.resolve(filePath);
 
         Files.createDirectories(configFile.getParent());

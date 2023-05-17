@@ -27,26 +27,26 @@ public class YamlConfiguration extends ConfigurationProvider {
     });
 
     @Override
-    public void save(@NotNull Configuration config, @NotNull File file) throws IOException {
+    public void save(@NotNull final Configuration config, final @NotNull File file) throws IOException {
         try (final Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             save(config, writer);
         }
     }
 
     @Override
-    public void save(@NotNull Configuration config, @NotNull Writer writer) {
+    public void save(@NotNull final Configuration config, @NotNull final Writer writer) {
         yaml.get().dump(config.self, writer);
     }
 
     @Override
     @NotNull
-    public Configuration load(@NotNull File file) throws IOException {
+    public Configuration load(@NotNull final File file) throws IOException {
         return load(file, null);
     }
 
     @Override
     @NotNull
-    public Configuration load(@NotNull File file, @Nullable Configuration defaults) throws IOException {
+    public Configuration load(@NotNull final File file, @Nullable final Configuration defaults) throws IOException {
         try (final FileInputStream is = new FileInputStream(file)) {
             return load(is, defaults);
         }
@@ -54,14 +54,14 @@ public class YamlConfiguration extends ConfigurationProvider {
 
     @Override
     @NotNull
-    public Configuration load(@NotNull Reader reader) {
+    public Configuration load(@NotNull final Reader reader) {
         return load(reader, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     @NotNull
-    public Configuration load(@NotNull Reader reader, @Nullable Configuration defaults) {
+    public Configuration load(@NotNull final Reader reader, @Nullable final Configuration defaults) {
         Map<String, Object> map = yaml.get().loadAs(reader, LinkedHashMap.class);
         if (map == null) map = new LinkedHashMap<>();
         return new Configuration(map, defaults);
@@ -69,14 +69,14 @@ public class YamlConfiguration extends ConfigurationProvider {
 
     @Override
     @NotNull
-    public Configuration load(@NotNull InputStream is) {
+    public Configuration load(@NotNull final InputStream is) {
         return load(is, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     @NotNull
-    public Configuration load(@NotNull InputStream is, @Nullable Configuration defaults) {
+    public Configuration load(@NotNull final InputStream is, @Nullable final Configuration defaults) {
         Map<String, Object> map = yaml.get().loadAs(is, LinkedHashMap.class);
         if (map == null) map = new LinkedHashMap<>();
         return new Configuration(map, defaults);
@@ -84,14 +84,14 @@ public class YamlConfiguration extends ConfigurationProvider {
 
     @Override
     @NotNull
-    public Configuration load(@NotNull String string) {
+    public Configuration load(@NotNull final String string) {
         return load(string, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     @NotNull
-    public Configuration load(@NotNull String string, @Nullable Configuration defaults) {
+    public Configuration load(@NotNull final String string, @Nullable final Configuration defaults) {
         Map<String, Object> map = yaml.get().loadAs(string, LinkedHashMap.class);
         if (map == null) map = new LinkedHashMap<>();
         return new Configuration(map, defaults);
