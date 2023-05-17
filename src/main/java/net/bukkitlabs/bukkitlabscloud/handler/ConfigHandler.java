@@ -1,9 +1,6 @@
 package net.bukkitlabs.bukkitlabscloud.handler;
 
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
-import net.bukkitlabs.bukkitlabscloud.util.config.Configuration;
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigurationProvider;
-import net.bukkitlabs.bukkitlabscloud.util.config.YamlConfiguration;
+import net.bukkitlabs.bukkitlabscloud.util.config.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,15 +9,15 @@ import java.util.Objects;
 
 public class ConfigHandler {
 
-    private final ConfigurationProvider provider = Objects.requireNonNull(ConfigurationProvider.getProvider(YamlConfiguration.class));
+    private final ConfigurationProvider provider = Objects.requireNonNull(ConfigurationProvider.getProvider(JsonConfiguration.class));
     private File generalConfigurationFile;
     private Configuration generalConfiguration;
 
     public ConfigHandler() throws IOException {
-        this.generalConfigurationFile = Paths.get("", "config.yml").toFile();
+        this.generalConfigurationFile = Paths.get("", "config.json").toFile();
         if (!generalConfigurationFile.exists()) {
             final ConfigCreator creator = new ConfigCreator(Paths.get(""));
-            this.generalConfigurationFile = creator.copyDefaultFile(Paths.get("config.yml"));
+            this.generalConfigurationFile = creator.copyDefaultFile(Paths.get("config.json"));
         }
         this.reloadConfigurations();
     }
