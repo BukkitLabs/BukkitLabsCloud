@@ -25,19 +25,17 @@ public class CommandHandler {
 
     public void startListening() {
         while (true) {
-            String input = scanner.nextLine();
-            /*
+            final String input = scanner.nextLine();
             if (input.equalsIgnoreCase("exit")) {
-
-                break;
+                scanner.close();
+                System.exit(0);
+                return;
             }
-             */
-            String[] inputParts = input.split(" ");
-            String commandLabel = inputParts[0];
-            String[] args = Arrays.copyOfRange(inputParts, 1, inputParts.length);
+            final String[] inputParts = input.split(" ");
+            final String commandLabel = inputParts[0];
+            final String[] args = Arrays.copyOfRange(inputParts, 1, inputParts.length);
             handleCommand(commandLabel, args);
         }
-        //scanner.close();
     }
 
     private void handleCommand(@NotNull final String commandLabel, @NotNull final String[] args) {

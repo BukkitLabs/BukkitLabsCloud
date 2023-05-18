@@ -5,6 +5,8 @@ import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
 import net.bukkitlabs.bukkitlabscloud.console.commands.ServerCommand;
 import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.events.ServerStartEvent;
+import net.bukkitlabs.bukkitlabscloud.events.ServerStopEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
@@ -36,6 +38,18 @@ public class BukkitLabsCloud {
         setCommandHandler(new CommandHandler());
         this.registerCommands();
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
+        try {
+            getEventHandler().call(new ServerStartEvent());
+        } catch (EventCannotBeProcessedException exception) {
+            getLogger().log(Logger.Level.ERROR, "Event call failed: " + exception);
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                getEventHandler().call(new ServerStopEvent());
+            } catch (EventCannotBeProcessedException exception) {
+                getLogger().log(Logger.Level.ERROR, "Event call failed: " + exception);
+            }
+        }));
         getCommandHandler().startListening();
     }
 
