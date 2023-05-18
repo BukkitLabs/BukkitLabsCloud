@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PacketTest {
+class PacketCatchTest {
 
     private final PacketHandler packetHandler = new PacketHandler();
 

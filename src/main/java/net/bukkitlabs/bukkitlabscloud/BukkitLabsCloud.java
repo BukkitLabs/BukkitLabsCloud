@@ -1,19 +1,15 @@
 package net.bukkitlabs.bukkitlabscloud;
 
-import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadPacket;
+import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
 import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
 import net.bukkitlabs.bukkitlabscloud.console.commands.ServerCommand;
-import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
-import net.bukkitlabs.bukkitlabscloud.events.ServerStartEvent;
-import net.bukkitlabs.bukkitlabscloud.events.ServerStopEvent;
+import net.bukkitlabs.bukkitlabscloud.packets.ServerStartEvent;
+import net.bukkitlabs.bukkitlabscloud.packets.ServerStopEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketHandler;
-import net.bukkitlabs.bukkitlabscloud.console.Logger;
-import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
-import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,11 +27,10 @@ public class BukkitLabsCloud implements Listener {
         ConfigHandler tempConfigHandler;
         setLogger(new Logger());
         getPacketHandler().registerListener(getLogger());
-        getEventHandler().registerListener(this);
-        getEventHandler().registerListener(getLogger());
+        getPacketHandler().registerListener(this);
         try {
             tempConfigHandler = new ConfigHandler();
-            getPacketHandler().call(new ConfigurationLoadPacket(tempConfigHandler));
+            getPacketHandler().call(new ConfigurationLoadEvent(tempConfigHandler));
         } catch (IOException | PacketCannotBeProcessedException exception) {
             getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             tempConfigHandler = null;
@@ -46,14 +41,14 @@ public class BukkitLabsCloud implements Listener {
         this.registerCommands();
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
         try {
-            getEventHandler().call(new ServerStartEvent());
-        } catch (EventCannotBeProcessedException exception) {
+            getPacketHandler().call(new ServerStartEvent());
+        } catch (PacketCannotBeProcessedException exception) {
             getLogger().log(Logger.Level.ERROR, "Event call failed: " + exception);
         }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                getEventHandler().call(new ServerStopEvent());
-            } catch (EventCannotBeProcessedException exception) {
+                getPacketHandler().call(new ServerStopEvent());
+            } catch (PacketCannotBeProcessedException exception) {
                 getLogger().log(Logger.Level.ERROR, "Event call failed: " + exception);
             }
         }));

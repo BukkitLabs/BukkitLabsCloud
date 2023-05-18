@@ -1,10 +1,8 @@
 package net.bukkitlabs.bukkitlabscloud.console;
 
-import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadPacket;
-import net.bukkitlabs.bukkitlabscloud.util.event.Packet;
+import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import net.bukkitlabs.bukkitlabscloud.console.utils.ConsoleColor;
-import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
-import net.bukkitlabs.bukkitlabscloud.util.event.Callable;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,8 +28,8 @@ public class Logger implements Listener {
         createLogFile();
     }
 
-    @Packet
-    public void onConfigurationLoad(final ConfigurationLoadPacket packet) {
+    @PacketCatch
+    public void onConfigurationLoad(final ConfigurationLoadEvent packet) {
         log(Level.INFO, "Loading time/date format from configuration.");
         try {
             timeFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
