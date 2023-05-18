@@ -1,6 +1,7 @@
 package net.bukkitlabs.bukkitlabscloud;
 
 import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
+import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
 import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.LoopManager;
@@ -32,14 +33,11 @@ public class BukkitLabsCloud {
             System.exit(0);
         }
         setConfigHandler(tempConfigHandler);
-        setCommandHandler(new CommandHandler());
+        CommandHandler ch=new CommandHandler();
+        ch.registerCommand(new HelpCommand());
+        commandHandler.startListening();
+        setCommandHandler(commandHandler);
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
-    }
-
-    public static void initLoops(){
-        LoopManager loopManager = new LoopManager();
-        loopManager.addLoop(new CommandHandler());
-        loopManager.start();
     }
 
     public static void main(String[] args) {

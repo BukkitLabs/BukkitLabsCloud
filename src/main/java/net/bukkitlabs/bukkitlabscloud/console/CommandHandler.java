@@ -1,41 +1,52 @@
 package net.bukkitlabs.bukkitlabscloud.console;
 
+import net.bukkitlabs.bukkitlabscloud.BukkitLabsCloud;
+import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
+import org.jetbrains.annotations.NotNull;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class CommandHandler  implements Runnable {
-
-    private final Map<String, Command> commands;
+public class CommandHandler{
+    private final Map<String,Command> commands;
     private Scanner scanner;
 
-    public CommandHandler() {
-        commands = new HashMap<>();
+    public CommandHandler(){
+        commands=new HashMap<>();
+        scanner=new Scanner(System.in);
     }
 
-    public void registerCommand(Command command) {
-        commands.put(command.getName(), command);
+    public void registerCommand(@NotNull final CloudCommand cloudCommand,@NotNull final String name,@NotNull final String description){
+        Command command=new Command(cloudCommand,name,description);
+        commands.put(name,command);
     }
 
-    @Override
-    public void run(){
-        while (!Thread.currentThread().isInterrupted()) {
-            System.out.print("> ");
-            String input = scanner.nextLine();
-            if (input.isEmpty()) {
-                continue;
-            }
-            String[] inputParts = input.split(" ");
-            String commandLabel = inputParts[0];
+    public void startListening(){
+        while(true){
+            String input=scanner.nextLine();
+            /*
+            if (input.equalsIgnoreCase("exit")) {
 
-            Command command = commands.get(commandLabel);
-            if (command != null) {
-                String[] args = new String[inputParts.length - 1];
-                System.arraycopy(inputParts, 1, args, 0, args.length);
-                //onCommand()
-            } else {
-                System.out.println("Unbekanntes Kommando: " + commandLabel);
+                break;
             }
+             */
+            String[] inputParts=input.split(" ");
+            String commandLabel=inputParts[0];
+            String[] args=Arrays.copyOfRange(inputParts,1,inputParts.length);
+            handleCommand(commandLabel,args);
+        }
+        //scanner.close();
+    }
+
+    private void handleCommand(@NotNull final String commandLabel,@NotNull final String[] args){
+        Command command=commands.get(commandLabel);
+        if(command!=null){
+            CloudCommand cloudCommand=command.getCloudCommand();
+            cloudCommand.onCommand(command,commandLabel,args);
+        }else{
+            BukkitLabsCloud.getLogger().log(Logger.Level.WARN,"Unknown Command ("+commandLabel+"). Type help for all Help!");
         }
     }
+
 }

@@ -5,10 +5,11 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class CloudCommand{
 
-    protected CloudCommand(@NotNull final String name,@NotNull final String description){
-        BukkitLabsCloud.getCommandHandler().registerCommand(new Command(this,name,description));
+    protected CloudCommand(@NotNull final String name, @NotNull final String description) {
+
     }
-    public abstract boolean onCommand(@NotNull final Command command,@NotNull final String commandLabel,@NotNull final String[] args);
+
+    public abstract boolean onCommand(@NotNull final Command command, @NotNull final String commandLabel, @NotNull final String[] args);
 }
 
 
