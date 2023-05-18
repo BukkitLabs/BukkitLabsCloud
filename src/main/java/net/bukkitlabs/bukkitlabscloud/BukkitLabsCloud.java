@@ -1,13 +1,13 @@
 package net.bukkitlabs.bukkitlabscloud;
 
 import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
+import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
+import net.bukkitlabs.bukkitlabscloud.console.commands.ServerCommand;
 import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
-import net.bukkitlabs.bukkitlabscloud.util.LoopManager;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
-import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -33,11 +33,10 @@ public class BukkitLabsCloud {
             System.exit(0);
         }
         setConfigHandler(tempConfigHandler);
-        CommandHandler tempCommandHandler=new CommandHandler();
-        tempCommandHandler.registerCommand(new HelpCommand());
-        tempCommandHandler.startListening();
-        setCommandHandler(tempCommandHandler);
+        setCommandHandler(new CommandHandler());
+        this.registerCommands();
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
+        getCommandHandler().startListening();
     }
 
     public static void main(String[] args) {
@@ -71,11 +70,16 @@ public class BukkitLabsCloud {
         BukkitLabsCloud.configHandler = configHandler;
     }
 
-    public static CommandHandler getCommandHandler(){
+    public static CommandHandler getCommandHandler() {
         return commandHandler;
     }
 
-    private static void setCommandHandler(CommandHandler commandHandler){
-        BukkitLabsCloud.commandHandler=commandHandler;
+    private static void setCommandHandler(CommandHandler commandHandler) {
+        BukkitLabsCloud.commandHandler = commandHandler;
+    }
+
+    private void registerCommands() {
+        new HelpCommand();
+        new ServerCommand();
     }
 }

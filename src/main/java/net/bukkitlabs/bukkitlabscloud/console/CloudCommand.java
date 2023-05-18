@@ -1,15 +1,18 @@
 package net.bukkitlabs.bukkitlabscloud.console;
 
-import net.bukkitlabs.bukkitlabscloud.BukkitLabsCloud;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class CloudCommand{
+import java.util.Collections;
+import java.util.List;
 
-    protected CloudCommand(@NotNull final String name, @NotNull final String description) {
+public interface CloudCommand {
 
+    boolean onCommand(@NotNull final Command command, final String[] args);
+
+    @NotNull
+    default List<String> onTab(@NotNull final Command command, final String[] args) {
+        return Collections.emptyList();
     }
-
-    public abstract boolean onCommand(@NotNull final Command command, @NotNull final String commandLabel, @NotNull final String[] args);
 }
 
 
