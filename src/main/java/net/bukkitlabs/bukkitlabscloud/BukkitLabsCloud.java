@@ -10,11 +10,12 @@ import net.bukkitlabs.bukkitlabscloud.events.ServerStopEvent;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.EventHandler;
+import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class BukkitLabsCloud {
+public class BukkitLabsCloud implements Listener {
 
     private static Logger logger;
     private static EventHandler eventHandler;
@@ -25,6 +26,7 @@ public class BukkitLabsCloud {
         setEventHandler(new EventHandler());
         ConfigHandler tempConfigHandler;
         setLogger(new Logger());
+        getEventHandler().registerListener(this);
         getEventHandler().registerListener(getLogger());
         try {
             tempConfigHandler = new ConfigHandler();
