@@ -49,7 +49,7 @@ public class BukkitLabsCloud implements Listener {
     public static void main(String[] args) {
         new BukkitLabsCloud();
     }
-    
+
     @PacketCatch
     public void onServerInitialization(final ServerInitializeEvent event) {
         try {
