@@ -30,7 +30,6 @@ public class Logger implements Listener {
 
     @PacketCatch
     public void onConfigurationLoad(final ConfigurationLoadEvent packet) {
-        log(Level.INFO, "Loading time/date format from configuration.");
         try {
             timeFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
             dateFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));

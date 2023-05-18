@@ -19,19 +19,19 @@ public class HelpCommand implements CloudCommand {
 
     @Override
     public boolean onCommand(@NotNull Command command, String[] args) {
+        final String line = "================================================";
         switch (args.length) {
-            case 0:
-                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "================================================");
+            case 0 -> {
+                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, line);
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "");
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "Commands:");
-
                 BukkitLabsCloud.getCommandHandler().getAllRegisteredCommands().forEach(iteration ->
                         BukkitLabsCloud.getLogger().log(Logger.Level.INFO, iteration.getLabel() + " -> " + iteration.getDescription()));
-
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "");
-                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "================================================");
+                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, line);
                 return true;
-            case 1:
+            }
+            case 1 -> {
                 Command target = BukkitLabsCloud.getCommandHandler()
                         .getAllRegisteredCommands()
                         .stream()
@@ -42,16 +42,18 @@ public class HelpCommand implements CloudCommand {
                     BukkitLabsCloud.getLogger().log(Logger.Level.WARN, "The command " + args[0] + " was not found!");
                     return true;
                 }
-                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "================================================");
+                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, line);
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "");
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "Label: " + target.getLabel());
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "Usage: " + target.getUsage());
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "Description: " + target.getDescription());
                 BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "");
-                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, "================================================");
+                BukkitLabsCloud.getLogger().log(Logger.Level.INFO, line);
                 return true;
-            default:
+            }
+            default -> {
                 return false;
+            }
         }
     }
 }
