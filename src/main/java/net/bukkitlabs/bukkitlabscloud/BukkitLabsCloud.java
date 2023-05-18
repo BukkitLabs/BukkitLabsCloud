@@ -33,10 +33,10 @@ public class BukkitLabsCloud {
             System.exit(0);
         }
         setConfigHandler(tempConfigHandler);
-        CommandHandler ch=new CommandHandler();
-        ch.registerCommand(new HelpCommand());
-        commandHandler.startListening();
-        setCommandHandler(commandHandler);
+        CommandHandler tempCommandHandler=new CommandHandler();
+        tempCommandHandler.registerCommand(new HelpCommand());
+        tempCommandHandler.startListening();
+        setCommandHandler(tempCommandHandler);
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
     }
 
