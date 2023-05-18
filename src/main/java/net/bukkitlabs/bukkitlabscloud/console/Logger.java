@@ -1,5 +1,7 @@
 package net.bukkitlabs.bukkitlabscloud.console;
 
+import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadPacket;
+import net.bukkitlabs.bukkitlabscloud.util.event.Packet;
 import net.bukkitlabs.bukkitlabscloud.console.utils.ConsoleColor;
 import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Callable;
@@ -20,7 +22,7 @@ public class Logger implements Listener {
     private final String logFolder = "logs";
     private final String logFileExtension = ".log";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH-mm-ss");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private PrintWriter writer;
 
     public Logger() {
@@ -28,12 +30,12 @@ public class Logger implements Listener {
         createLogFile();
     }
 
-    @Callable
-    public void onConfigurationLoad(final ConfigurationLoadEvent event) {
+    @Packet
+    public void onConfigurationLoad(final ConfigurationLoadPacket packet) {
         log(Level.INFO, "Loading time/date format from configuration.");
         try {
-            timeFormat = new SimpleDateFormat(event.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
-            dateFormat = new SimpleDateFormat(event.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));
+            timeFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
+            dateFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));
         } catch (IllegalArgumentException | NullPointerException exception) {
             log(Logger.Level.ERROR, "Invalid time/date format in configuration" + exception);
         }

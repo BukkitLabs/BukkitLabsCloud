@@ -7,13 +7,13 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Callable {
+public @interface Packet {
 
-    EventPriority priority() default EventPriority.NORMAL;
+    Priority priority() default Priority.NORMAL;
 
     boolean ignoreCancelled() default false;
 
-    enum EventPriority {
+    enum Priority {
         LOWEST(0),
         LOW(1),
         NORMAL(2),
@@ -23,7 +23,7 @@ public @interface Callable {
 
         private final int slot;
 
-        EventPriority(int slot) {
+        Priority(int slot) {
             this.slot = slot;
         }
 
