@@ -1,9 +1,9 @@
 package net.bukkitlabs.bukkitlabscloud.console;
 
-import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
-import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import net.bukkitlabs.bukkitlabscloud.console.utils.ConsoleColor;
+import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
+import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

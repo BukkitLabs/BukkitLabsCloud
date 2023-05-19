@@ -1,17 +1,17 @@
 package net.bukkitlabs.bukkitlabscloud;
 
-import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
 import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
 import net.bukkitlabs.bukkitlabscloud.console.commands.ServerCommand;
+import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.packets.ServerInitializeEvent;
 import net.bukkitlabs.bukkitlabscloud.packets.ServerShutdownEvent;
-import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketHandler;
-import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -50,27 +50,6 @@ public class BukkitLabsCloud implements Listener {
         new BukkitLabsCloud();
     }
 
-    @PacketCatch
-    private void onServerInitialization(final ServerInitializeEvent event) {
-        try {
-            setConfigHandler(new ConfigHandler());
-            getPacketHandler().call(new ConfigurationLoadEvent(getConfigHandler()));
-        } catch (IOException | PacketCannotBeProcessedException exception) {
-            getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
-            System.exit(0);
-        }
-
-        setCommandHandler(new CommandHandler());
-        this.registerCommands();
-
-        getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
-    }
-
-    @PacketCatch
-    private void onServerShutdown(final ServerShutdownEvent event) {
-        getLogger().log(Logger.Level.INFO, "Goodbye...");
-    }
-
     @NotNull
     public static Logger getLogger() {
         return logger;
@@ -104,6 +83,27 @@ public class BukkitLabsCloud implements Listener {
 
     private static void setCommandHandler(CommandHandler commandHandler) {
         BukkitLabsCloud.commandHandler = commandHandler;
+    }
+
+    @PacketCatch
+    private void onServerInitialization(final ServerInitializeEvent event) {
+        try {
+            setConfigHandler(new ConfigHandler());
+            getPacketHandler().call(new ConfigurationLoadEvent(getConfigHandler()));
+        } catch (IOException | PacketCannotBeProcessedException exception) {
+            getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
+            System.exit(0);
+        }
+
+        setCommandHandler(new CommandHandler());
+        this.registerCommands();
+
+        getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
+    }
+
+    @PacketCatch
+    private void onServerShutdown(final ServerShutdownEvent event) {
+        getLogger().log(Logger.Level.INFO, "Goodbye...");
     }
 
     private void registerCommands() {
