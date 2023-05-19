@@ -1,7 +1,9 @@
 package net.bukkitlabs.bukkitlabscloud.console;
 
 import net.bukkitlabs.bukkitlabscloud.console.util.ConsoleColor;
+import net.bukkitlabs.bukkitlabscloud.packet.CommandExecuteEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.packet.UnknownCommandExecuteEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +14,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 // TODO: 17.05.23 Implement that older logs get comprimized (lastest.log)
 public class Logger implements Listener {
@@ -29,13 +34,47 @@ public class Logger implements Listener {
     }
 
     @PacketCatch
-    public void onConfigurationLoad(final ConfigurationLoadEvent packet) {
+    private void onConfigurationLoad(final ConfigurationLoadEvent event) {
         try {
-            timeFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
-            dateFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));
+            timeFormat = new SimpleDateFormat(event.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
+            dateFormat = new SimpleDateFormat(event.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));
         } catch (IllegalArgumentException | NullPointerException exception) {
             log(Logger.Level.ERROR, "Invalid time/date format in configuration" + exception);
         }
+    }
+
+    @PacketCatch
+    private void onCommandExecute(final CommandExecuteEvent event){
+        final StringBuilder stringBuilder = new StringBuilder();
+        if(!event.isCanceled()){
+            stringBuilder.append("Command executed: ")
+                    .append(event.getCommand().getLabel());
+            for (String arg : event.getArgs()){
+                stringBuilder.append(" ")
+                        .append(arg);
+            }
+            softLog(Level.INFO, stringBuilder.toString());
+        }else {
+            stringBuilder.append("Command canceled: ")
+                    .append(event.getCommand().getLabel());
+            for (String arg : event.getArgs()){
+                stringBuilder.append(" ")
+                        .append(arg);
+            }
+            softLog(Level.WARN, stringBuilder.toString());
+        }
+    }
+
+    @PacketCatch
+    private void onUnknownCommandExecute(final UnknownCommandExecuteEvent event){
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Unknown Command executed: ")
+                .append(event.getCommandLabel());
+        for (String arg : event.getArgs()){
+            stringBuilder.append(" ")
+                    .append(arg);
+        }
+        softLog(Level.INFO, stringBuilder.toString());
     }
 
     @NotNull
@@ -79,13 +118,40 @@ public class Logger implements Listener {
         }
     }
 
-    @NotNull
-    private String generateLogId() {
-        return Long.toString(System.nanoTime());
+    private int generateLogId() {
+        int id=1;
+        final File folder = new File(logFolder);
+        final File[] allLogFiles = folder.listFiles((dir, name) -> name.contains(getDate()));
+
+        final List<File> matchingFiles = new ArrayList<>();
+        if (allLogFiles != null) {
+            for (File file : allLogFiles) {
+                if (file.isFile()) {
+                    matchingFiles.add(file);
+                }
+            }
+        }
+        final File[] currentLogFiles = matchingFiles.toArray(new File[0]);
+
+        if (currentLogFiles.length > 0) {
+            Arrays.sort(currentLogFiles);
+            final String lastLogFileName = currentLogFiles[currentLogFiles.length - 1].getName();
+            final String[] parts = lastLogFileName.split("-");
+            if (parts.length > 0){
+                id=Integer.parseInt(parts[parts.length-1].replace(logFileExtension,""))+1;
+            }else {
+                log(Level.WARN,"Invalid naming of a log file. Log ID was set to 1.");
+            }
+        }
+        return id;
     }
 
     public void log(@NotNull final Level level, @NotNull final String message) {
         printLog(generateConsoleMessage(level, message));
+        writeLog(generateLogMessage(level, message));
+    }
+
+    public void softLog(@NotNull final Level level, @NotNull final String message) {
         writeLog(generateLogMessage(level, message));
     }
 
@@ -188,4 +254,5 @@ public class Logger implements Listener {
             return consoleColor;
         }
     }
+
 }
