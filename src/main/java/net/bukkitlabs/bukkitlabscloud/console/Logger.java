@@ -3,27 +3,26 @@ package net.bukkitlabs.bukkitlabscloud.console;
 import net.bukkitlabs.bukkitlabscloud.console.util.ConsoleColor;
 import net.bukkitlabs.bukkitlabscloud.packet.CommandExecuteEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.packet.ServerShutdownEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.UnknownCommandExecuteEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
-// TODO: 17.05.23 Implement that older logs get comprimized (lastest.log)
 public class Logger implements Listener {
 
-    private final String logFolder = "logs";
+    private final String logFolder = "/logs/";
     private final String logFileExtension = ".log";
+    private final String logFileCompressedExtension = ".log.gz";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private PrintWriter writer;
@@ -41,6 +40,7 @@ public class Logger implements Listener {
         } catch (IllegalArgumentException | NullPointerException exception) {
             log(Logger.Level.ERROR, "Invalid time/date format in configuration" + exception);
         }
+        compressLogFiles();
     }
 
     @PacketCatch
@@ -120,8 +120,7 @@ public class Logger implements Listener {
 
     private int generateLogId() {
         int id=1;
-        final File folder = new File(logFolder);
-        final File[] allLogFiles = folder.listFiles((dir, name) -> name.contains(getDate()));
+        final File[] allLogFiles = new File(logFolder).listFiles((dir, name) -> name.contains(getDate()));
 
         final List<File> matchingFiles = new ArrayList<>();
         if (allLogFiles != null) {
@@ -138,7 +137,7 @@ public class Logger implements Listener {
             final String lastLogFileName = currentLogFiles[currentLogFiles.length - 1].getName();
             final String[] parts = lastLogFileName.split("-");
             if (parts.length > 0){
-                id=Integer.parseInt(parts[parts.length-1].replace(logFileExtension,""))+1;
+                id=Integer.parseInt(parts[parts.length-1].replace(logFileCompressedExtension,"").replace(logFileExtension,""))+1;
             }else {
                 log(Level.WARN,"Invalid naming of a log file. Log ID was set to 1.");
             }
@@ -228,6 +227,35 @@ public class Logger implements Listener {
             stringBuilder.append(stackTraceElement.toString()).append(System.lineSeparator());
         }
         return stringBuilder.toString();
+    }
+
+    private void compressLogFiles() {
+        final File[] allLogFiles = new File(logFolder).listFiles((dir, name) -> name.endsWith(logFileExtension));
+        final List<File> matchingFiles = new ArrayList<>();
+        if (allLogFiles != null) {
+            for (File file : allLogFiles) {
+                if (file.isFile()) matchingFiles.add(file);
+            }
+        }
+        final File[] uncompressedLogFiles = matchingFiles.toArray(new File[0]);
+        for (File file : uncompressedLogFiles){
+            try (FileInputStream fileInputStream = new FileInputStream(file);
+                 FileOutputStream fileOutputStream = new FileOutputStream(file+logFileCompressedExtension);
+                 GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    gzipOutputStream.write(buffer, 0, bytesRead);
+                }
+                log(Level.FINE,"Log file "+file.getName()+" was compressed successfully.");
+                if (!file.delete()) {
+                    log(Level.WARN,"Uncompressed Log file "+file.getName()+" could not be deleted.");
+                }
+
+            } catch (IOException e) {
+                log(Level.ERROR,"Log file "+file.getName()+" could not be compressed."+e);
+            }
+        }
     }
 
     public enum Level {
