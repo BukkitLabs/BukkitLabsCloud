@@ -35,7 +35,9 @@ public class PacketHandler {
                     method.getParameterTypes().length != 1 ||
                     !method.getParameterTypes()[0].equals(packet.getClass())) continue;
             try {
-                method.invoke(this.methodeList.get(method), packet);
+                final Listener listener = this.methodeList.get(method);
+                if (!method.canAccess(listener)) method.setAccessible(true);
+                method.invoke(listener, packet);
             } catch (IllegalAccessException | InvocationTargetException exception) {
                 throw new PacketCannotBeProcessedException(packet);
             }
@@ -50,7 +52,9 @@ public class PacketHandler {
                     !method.getParameterTypes()[0].equals(event.getClass()) ||
                     (canceled && !method.getAnnotation(PacketCatch.class).ignoreCancelled())) continue;
             try {
-                method.invoke(this.methodeList.get(method), event);
+                final Listener listener = this.methodeList.get(method);
+                if (!method.canAccess(listener)) method.setAccessible(true);
+                method.invoke(listener, event);
                 if (event.isCanceled()) canceled = true;
             } catch (IllegalAccessException | InvocationTargetException exception) {
                 throw new PacketCannotBeProcessedException((net.bukkitlabs.bukkitlabscloud.util.event.api.Packet) event);
