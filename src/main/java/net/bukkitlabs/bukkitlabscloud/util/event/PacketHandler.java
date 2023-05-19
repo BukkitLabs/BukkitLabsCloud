@@ -14,7 +14,7 @@ public class PacketHandler {
 
     public void registerListener(@NotNull final Listener listener) {
         for (final Method method : listener.getClass().getDeclaredMethods()) {
-            if (!method.isAnnotationPresent(Packet.class) ||
+            if (!method.isAnnotationPresent(PacketCatch.class) ||
                     method.getParameterTypes().length != 1) continue;
             methodeList.put(method, listener);
         }
@@ -23,19 +23,21 @@ public class PacketHandler {
     public void call(@NotNull final net.bukkitlabs.bukkitlabscloud.util.event.api.Packet packet) throws PacketCannotBeProcessedException {
         final Method[] methods = this.methodeList.keySet().stream()
                 .filter(method -> method.getParameterTypes()[0].equals(packet.getClass()))
-                .sorted((methode1, methode2) -> methode2.getAnnotation(Packet.class).priority().getSlot() -
-                        methode1.getAnnotation(Packet.class).priority().getSlot())
+                .sorted((methode1, methode2) -> methode2.getAnnotation(PacketCatch.class).priority().getSlot() -
+                        methode1.getAnnotation(PacketCatch.class).priority().getSlot())
                 .toArray(Method[]::new);
         if (packet instanceof Cancelable cancelable) {
             this.cancelableCall(cancelable, methods);
             return;
         }
         for (final Method method : methods) {
-            if (!method.isAnnotationPresent(Packet.class) ||
+            if (!method.isAnnotationPresent(PacketCatch.class) ||
                     method.getParameterTypes().length != 1 ||
                     !method.getParameterTypes()[0].equals(packet.getClass())) continue;
             try {
-                method.invoke(this.methodeList.get(method), packet);
+                final Listener listener = this.methodeList.get(method);
+                if (!method.canAccess(listener)) method.setAccessible(true);
+                method.invoke(listener, packet);
             } catch (IllegalAccessException | InvocationTargetException exception) {
                 throw new PacketCannotBeProcessedException(packet);
             }
@@ -45,12 +47,14 @@ public class PacketHandler {
     private void cancelableCall(final @NotNull Cancelable event, final @NotNull Method[] methods) throws PacketCannotBeProcessedException {
         boolean canceled = false;
         for (final Method method : methods) {
-            if (!method.isAnnotationPresent(Packet.class) ||
+            if (!method.isAnnotationPresent(PacketCatch.class) ||
                     method.getParameterTypes().length != 1 ||
                     !method.getParameterTypes()[0].equals(event.getClass()) ||
-                    (canceled && !method.getAnnotation(Packet.class).ignoreCancelled())) continue;
+                    (canceled && !method.getAnnotation(PacketCatch.class).ignoreCancelled())) continue;
             try {
-                method.invoke(this.methodeList.get(method), event);
+                final Listener listener = this.methodeList.get(method);
+                if (!method.canAccess(listener)) method.setAccessible(true);
+                method.invoke(listener, event);
                 if (event.isCanceled()) canceled = true;
             } catch (IllegalAccessException | InvocationTargetException exception) {
                 throw new PacketCannotBeProcessedException((net.bukkitlabs.bukkitlabscloud.util.event.api.Packet) event);

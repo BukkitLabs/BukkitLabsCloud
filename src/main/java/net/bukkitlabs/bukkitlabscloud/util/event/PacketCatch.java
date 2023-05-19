@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Packet {
+public @interface PacketCatch {
 
     Priority priority() default Priority.NORMAL;
 
