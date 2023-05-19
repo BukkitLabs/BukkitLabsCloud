@@ -2,6 +2,8 @@ package net.bukkitlabs.bukkitlabscloud.console;
 
 import net.bukkitlabs.bukkitlabscloud.BukkitLabsCloud;
 import org.jetbrains.annotations.NotNull;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 
 import java.util.*;
 
@@ -24,8 +26,11 @@ public class CommandHandler {
     }
 
     public void startListening() {
+        final LineReader reader = LineReaderBuilder.builder()
+                .completer(new CompleterHandler())
+                .build();
         while (true) {
-            final String input = scanner.nextLine();
+            final String input = reader.readLine();
             if (input.equalsIgnoreCase("exit")) {
                 scanner.close();
                 System.exit(0);
