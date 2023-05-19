@@ -20,16 +20,19 @@ import java.util.zip.GZIPOutputStream;
 
 public class Logger implements Listener {
 
-    private final String logFolder = "/logs/";
+    private final String logFolder = "logs";
     private final String logFileExtension = ".log";
     private final String logFileCompressedExtension = ".log.gz";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private PrintWriter writer;
+    private String currentLogFileName;
+    private int currentLogId;
 
     public Logger() {
         createLogFolder();
         createLogFile();
+        compressLogFiles();
     }
 
     @PacketCatch
@@ -40,7 +43,6 @@ public class Logger implements Listener {
         } catch (IllegalArgumentException | NullPointerException exception) {
             log(Logger.Level.ERROR, "Invalid time/date format in configuration" + exception);
         }
-        compressLogFiles();
     }
 
     @PacketCatch
@@ -107,8 +109,8 @@ public class Logger implements Listener {
     }
 
     private void createLogFile() {
-        final String logFileName = getDate() + "-" + generateLogId() + logFileExtension;
-        final File file = Paths.get(this.logFolder, logFileName).toFile();
+        currentLogFileName = getDate() + "-" + generateLogId() + logFileExtension;
+        final File file = Paths.get(this.logFolder, currentLogFileName).toFile();
         try {
             file.createNewFile();
             final FileWriter fileWriter = new FileWriter(file, true);
@@ -119,7 +121,7 @@ public class Logger implements Listener {
     }
 
     private int generateLogId() {
-        int id=1;
+        currentLogId=1;
         final File[] allLogFiles = new File(logFolder).listFiles((dir, name) -> name.contains(getDate()));
 
         final List<File> matchingFiles = new ArrayList<>();
@@ -137,12 +139,12 @@ public class Logger implements Listener {
             final String lastLogFileName = currentLogFiles[currentLogFiles.length - 1].getName();
             final String[] parts = lastLogFileName.split("-");
             if (parts.length > 0){
-                id=Integer.parseInt(parts[parts.length-1].replace(logFileCompressedExtension,"").replace(logFileExtension,""))+1;
+                currentLogId=Integer.parseInt(parts[parts.length-1].replace(logFileCompressedExtension,"").replace(logFileExtension,""))+1;
             }else {
                 log(Level.WARN,"Invalid naming of a log file. Log ID was set to 1.");
             }
         }
-        return id;
+        return currentLogId;
     }
 
     public void log(@NotNull final Level level, @NotNull final String message) {
@@ -230,7 +232,7 @@ public class Logger implements Listener {
     }
 
     private void compressLogFiles() {
-        final File[] allLogFiles = new File(logFolder).listFiles((dir, name) -> name.endsWith(logFileExtension));
+        final File[] allLogFiles = new File(logFolder).listFiles((dir,name) -> (!name.equals(currentLogFileName)&&name.endsWith(logFileExtension)));
         final List<File> matchingFiles = new ArrayList<>();
         if (allLogFiles != null) {
             for (File file : allLogFiles) {
@@ -240,7 +242,7 @@ public class Logger implements Listener {
         final File[] uncompressedLogFiles = matchingFiles.toArray(new File[0]);
         for (File file : uncompressedLogFiles){
             try (FileInputStream fileInputStream = new FileInputStream(file);
-                 FileOutputStream fileOutputStream = new FileOutputStream(file+logFileCompressedExtension);
+                 FileOutputStream fileOutputStream = new FileOutputStream(file.getPath().replace(logFileExtension,logFileCompressedExtension));
                  GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream)) {
                 byte[] buffer = new byte[1024];
                 int bytesRead;
