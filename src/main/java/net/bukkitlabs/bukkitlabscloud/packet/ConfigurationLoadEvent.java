@@ -1,10 +1,10 @@
-package net.bukkitlabs.bukkitlabscloud.events;
+package net.bukkitlabs.bukkitlabscloud.packet;
 
-import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
-import net.bukkitlabs.bukkitlabscloud.util.event.Event;
+import net.bukkitlabs.bukkitlabscloud.util.config.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.util.event.api.Packet;
 import org.jetbrains.annotations.NotNull;
 
-public class ConfigurationLoadEvent extends Event {
+public class ConfigurationLoadEvent extends Packet {
 
     private final ConfigHandler configHandler;
 

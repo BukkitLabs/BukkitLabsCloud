@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.handler;
+package net.bukkitlabs.bukkitlabscloud.util.config;
 
 import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
 import net.bukkitlabs.bukkitlabscloud.util.config.Configuration;

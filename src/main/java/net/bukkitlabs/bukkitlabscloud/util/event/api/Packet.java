@@ -1,25 +1,25 @@
-package net.bukkitlabs.bukkitlabscloud.util.event;
+package net.bukkitlabs.bukkitlabscloud.util.event.api;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class Event {
+public abstract class Packet {
 
     private final boolean async;
     private String name;
 
-    protected Event() {
+    protected Packet() {
         this(false);
     }
 
-    protected Event(boolean isAsync) {
+    protected Packet(boolean isAsync) {
         this.async = isAsync;
     }
 
-    protected Event(@NotNull String name) {
+    protected Packet(@NotNull String name) {
         this(name, false);
     }
 
-    protected Event(@NotNull String name, boolean isAsync) {
+    protected Packet(@NotNull String name, boolean isAsync) {
         this.name = name;
         this.async = isAsync;
     }

@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.util.logger;
+package net.bukkitlabs.bukkitlabscloud.console.util;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.util.event;
+package net.bukkitlabs.bukkitlabscloud.util.event.api;
 
 public interface Cancelable {
 

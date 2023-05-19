@@ -1,8 +1,9 @@
-package net.bukkitlabs.bukkitlabscloud.util.logger;
+package net.bukkitlabs.bukkitlabscloud.console;
 
-import net.bukkitlabs.bukkitlabscloud.events.ConfigurationLoadEvent;
-import net.bukkitlabs.bukkitlabscloud.util.event.Callable;
+import net.bukkitlabs.bukkitlabscloud.console.util.ConsoleColor;
+import net.bukkitlabs.bukkitlabscloud.packet.ConfigurationLoadEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
+import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -13,12 +14,13 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// TODO: 17.05.23 Implement that older logs get comprimized (lastest.log)
 public class Logger implements Listener {
 
     private final String logFolder = "logs";
     private final String logFileExtension = ".log";
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH-mm-ss");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private PrintWriter writer;
 
     public Logger() {
@@ -26,12 +28,11 @@ public class Logger implements Listener {
         createLogFile();
     }
 
-    @Callable
-    public void onConfigurationLoad(final ConfigurationLoadEvent event) {
-        log(Level.INFO, "Loading time/date format from configuration.");
+    @PacketCatch
+    public void onConfigurationLoad(final ConfigurationLoadEvent packet) {
         try {
-            timeFormat = new SimpleDateFormat(event.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
-            dateFormat = new SimpleDateFormat(event.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));
+            timeFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat"));
+            dateFormat = new SimpleDateFormat(packet.getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat"));
         } catch (IllegalArgumentException | NullPointerException exception) {
             log(Logger.Level.ERROR, "Invalid time/date format in configuration" + exception);
         }
