@@ -9,11 +9,13 @@ import java.util.*;
 
 public class CommandHandler {
     private final Map<String, Command> commands;
-    private final Scanner scanner;
+    private final LineReader reader;
 
     public CommandHandler() {
         commands = new HashMap<>();
-        scanner = new Scanner(System.in);
+        reader = LineReaderBuilder.builder()
+                .completer(new CompleterHandler())
+                .build();
     }
 
     public void registerCommand(@NotNull final Command command) {
@@ -26,13 +28,9 @@ public class CommandHandler {
     }
 
     public void startListening() {
-        final LineReader reader = LineReaderBuilder.builder()
-                .completer(new CompleterHandler())
-                .build();
         while (true) {
             final String input = reader.readLine();
             if (input.equalsIgnoreCase("exit")) {
-                scanner.close();
                 System.exit(0);
                 return;
             }
