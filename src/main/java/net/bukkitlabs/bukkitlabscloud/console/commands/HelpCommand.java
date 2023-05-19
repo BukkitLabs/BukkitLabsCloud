@@ -6,6 +6,9 @@ import net.bukkitlabs.bukkitlabscloud.console.Command;
 import net.bukkitlabs.bukkitlabscloud.console.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
+
 public class HelpCommand implements CloudCommand {
 
     public HelpCommand() {
@@ -55,5 +58,14 @@ public class HelpCommand implements CloudCommand {
                 return false;
             }
         }
+    }
+
+    @Override
+    public @NotNull List<String> onTab(@NotNull Command command, String[] args) {
+        return args.length == 1 ? BukkitLabsCloud.getCommandHandler()
+                .getAllRegisteredCommands()
+                .stream()
+                .map(Command::getLabel)
+                .toList() : Collections.emptyList();
     }
 }
