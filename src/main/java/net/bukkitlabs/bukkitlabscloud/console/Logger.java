@@ -3,7 +3,6 @@ package net.bukkitlabs.bukkitlabscloud.console;
 import net.bukkitlabs.bukkitlabscloud.console.util.ConsoleColor;
 import net.bukkitlabs.bukkitlabscloud.packet.CommandExecuteEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.ConfigurationLoadEvent;
-import net.bukkitlabs.bukkitlabscloud.packet.ServerShutdownEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.UnknownCommandExecuteEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
@@ -251,9 +250,9 @@ public class Logger implements Listener {
                 }
                 log(Level.FINE,"Log file "+file.getName()+" was compressed successfully.");
                 if (!file.delete()) {
-                    log(Level.WARN,"Uncompressed Log file "+file.getName()+" could not be deleted.");
+                    log(Level.WARN,"Uncompressed Log file "+file.getName()+" could not be deleted. Delete file on Exit...");
+                    file.deleteOnExit();
                 }
-
             } catch (IOException e) {
                 log(Level.ERROR,"Log file "+file.getName()+" could not be compressed."+e);
             }
