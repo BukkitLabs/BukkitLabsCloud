@@ -51,7 +51,7 @@ public class BukkitLabsCloud implements Listener {
     }
 
     @PacketCatch
-    public void onServerInitialization(final ServerInitializeEvent event) {
+    private void onServerInitialization(final ServerInitializeEvent event) {
         try {
             setConfigHandler(new ConfigHandler());
             getPacketHandler().call(new ConfigurationLoadEvent(getConfigHandler()));
@@ -67,7 +67,7 @@ public class BukkitLabsCloud implements Listener {
     }
 
     @PacketCatch
-    public void onServerShutdown(final ServerShutdownEvent event) {
+    private void onServerShutdown(final ServerShutdownEvent event) {
         getLogger().log(Logger.Level.INFO, "Goodbye...");
     }
 
