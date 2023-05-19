@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.console.commands;
+package net.bukkitlabs.bukkitlabscloud.console.command;
 
 import net.bukkitlabs.bukkitlabscloud.BukkitLabsCloud;
 import net.bukkitlabs.bukkitlabscloud.console.CloudCommand;

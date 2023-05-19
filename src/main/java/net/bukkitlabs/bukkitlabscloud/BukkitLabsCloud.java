@@ -2,12 +2,12 @@ package net.bukkitlabs.bukkitlabscloud;
 
 import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
 import net.bukkitlabs.bukkitlabscloud.console.Logger;
-import net.bukkitlabs.bukkitlabscloud.console.commands.HelpCommand;
-import net.bukkitlabs.bukkitlabscloud.console.commands.ServerCommand;
-import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
-import net.bukkitlabs.bukkitlabscloud.packets.ConfigurationLoadEvent;
-import net.bukkitlabs.bukkitlabscloud.packets.ServerInitializeEvent;
-import net.bukkitlabs.bukkitlabscloud.packets.ServerShutdownEvent;
+import net.bukkitlabs.bukkitlabscloud.console.command.HelpCommand;
+import net.bukkitlabs.bukkitlabscloud.console.command.ServerCommand;
+import net.bukkitlabs.bukkitlabscloud.util.config.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.packet.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.packet.ServerInitializeEvent;
+import net.bukkitlabs.bukkitlabscloud.packet.ServerShutdownEvent;
 import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCannotBeProcessedException;
 import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;

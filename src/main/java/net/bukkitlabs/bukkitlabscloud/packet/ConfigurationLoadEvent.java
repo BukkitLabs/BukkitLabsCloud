@@ -1,6 +1,6 @@
-package net.bukkitlabs.bukkitlabscloud.packets;
+package net.bukkitlabs.bukkitlabscloud.packet;
 
-import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
+import net.bukkitlabs.bukkitlabscloud.util.config.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.util.event.api.Packet;
 import org.jetbrains.annotations.NotNull;
 

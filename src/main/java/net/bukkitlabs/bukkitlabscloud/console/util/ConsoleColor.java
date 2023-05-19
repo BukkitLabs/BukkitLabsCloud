@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.console.utils;
+package net.bukkitlabs.bukkitlabscloud.console.util;
 
 import org.jetbrains.annotations.NotNull;
 

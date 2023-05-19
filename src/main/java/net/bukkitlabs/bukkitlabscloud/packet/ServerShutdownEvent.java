@@ -1,4 +1,4 @@
-package net.bukkitlabs.bukkitlabscloud.packets;
+package net.bukkitlabs.bukkitlabscloud.packet;
 
 import net.bukkitlabs.bukkitlabscloud.util.event.api.Packet;
 
