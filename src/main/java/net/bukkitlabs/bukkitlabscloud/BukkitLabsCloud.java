@@ -1,17 +1,17 @@
 package net.bukkitlabs.bukkitlabscloud;
 
-import net.bukkitlabs.bukkitlabscloud.console.CommandHandler;
-import net.bukkitlabs.bukkitlabscloud.console.Logger;
-import net.bukkitlabs.bukkitlabscloud.console.command.HelpCommand;
-import net.bukkitlabs.bukkitlabscloud.console.command.ServerCommand;
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigHandler;
-import net.bukkitlabs.bukkitlabscloud.packet.ConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloud.command.HelpCommand;
+import net.bukkitlabs.bukkitlabscloud.command.ServerCommand;
+import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.packet.ServerInitializeEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.ServerShutdownEvent;
-import net.bukkitlabs.bukkitlabscloud.util.event.Listener;
-import net.bukkitlabs.bukkitlabscloud.util.event.PacketCannotBeProcessedException;
-import net.bukkitlabs.bukkitlabscloud.util.event.PacketCatch;
-import net.bukkitlabs.bukkitlabscloud.util.event.PacketHandler;
+import net.bukkitlabs.bukkitlabscloudapi.console.CommandHandler;
+import net.bukkitlabs.bukkitlabscloudapi.console.Logger;
+import net.bukkitlabs.bukkitlabscloudapi.event.Listener;
+import net.bukkitlabs.bukkitlabscloudapi.event.PacketCannotBeProcessedException;
+import net.bukkitlabs.bukkitlabscloudapi.event.PacketCatch;
+import net.bukkitlabs.bukkitlabscloudapi.event.PacketHandler;
+import net.bukkitlabs.bukkitlabscloudapi.packet.LoggerConfigurationLoadEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -89,13 +89,16 @@ public class BukkitLabsCloud implements Listener {
     private void onServerInitialization(final ServerInitializeEvent event) {
         try {
             setConfigHandler(new ConfigHandler());
-            getPacketHandler().call(new ConfigurationLoadEvent(getConfigHandler()));
+            getPacketHandler().call(new LoggerConfigurationLoadEvent(
+                    getConfigHandler().getGeneralConfiguration().getString("logger.timeFormat", null),
+                    getConfigHandler().getGeneralConfiguration().getString("logger.dateFormat", null)
+            ));
         } catch (IOException | PacketCannotBeProcessedException exception) {
             getLogger().log(Logger.Level.ERROR, "Configs can't be loaded (System stops now): " + exception);
             System.exit(0);
         }
 
-        setCommandHandler(new CommandHandler());
+        setCommandHandler(new CommandHandler(BukkitLabsCloud.getPacketHandler(), BukkitLabsCloud.getLogger()));
         this.registerCommands();
 
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
