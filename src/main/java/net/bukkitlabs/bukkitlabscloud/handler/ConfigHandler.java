@@ -1,15 +1,14 @@
-package net.bukkitlabs.bukkitlabscloud.util.config;
+package net.bukkitlabs.bukkitlabscloud.handler;
 
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigCreator;
-import net.bukkitlabs.bukkitlabscloud.util.config.Configuration;
-import net.bukkitlabs.bukkitlabscloud.util.config.ConfigurationProvider;
-import net.bukkitlabs.bukkitlabscloud.util.config.JsonConfiguration;
+import net.bukkitlabs.bukkitlabscloudapi.config.ConfigCreator;
+import net.bukkitlabs.bukkitlabscloudapi.config.Configuration;
+import net.bukkitlabs.bukkitlabscloudapi.config.ConfigurationProvider;
+import net.bukkitlabs.bukkitlabscloudapi.config.JsonConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Objects;
-
 public class ConfigHandler {
 
     private final ConfigurationProvider provider = Objects.requireNonNull(ConfigurationProvider.getProvider(JsonConfiguration.class));

@@ -1,6 +1,6 @@
 package net.bukkitlabs.bukkitlabscloud.packet;
 
-import net.bukkitlabs.bukkitlabscloud.util.event.api.Packet;
+import net.bukkitlabs.bukkitlabscloudapi.event.Packet;
 
 public class ServerShutdownEvent extends Packet {
 
