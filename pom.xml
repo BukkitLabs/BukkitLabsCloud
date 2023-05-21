@@ -67,6 +67,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -105,10 +112,9 @@
             <version>3.23.0</version>
         </dependency>
         <dependency>
-            <groupId>net.bukkitlabs</groupId>
-            <artifactId>bukkitlabscloudapi</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>com.github.BukkitLabs.BukkitLabsCloudAPI</groupId>
+            <artifactId>InternalAPI</artifactId>
+            <version>17e7e43c0d</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
