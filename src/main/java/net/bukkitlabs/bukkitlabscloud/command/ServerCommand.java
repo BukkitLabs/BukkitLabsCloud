@@ -1,9 +1,9 @@
 package net.bukkitlabs.bukkitlabscloud.command;
 
 import net.bukkitlabs.bukkitlabscloud.BukkitLabsCloud;
-import net.bukkitlabs.bukkitlabscloudapi.console.CloudCommand;
-import net.bukkitlabs.bukkitlabscloudapi.console.Command;
-import net.bukkitlabs.bukkitlabscloudapi.console.Logger;
+import net.bukkitlabs.bukkitlabscloudapi.internal.console.CloudCommand;
+import net.bukkitlabs.bukkitlabscloudapi.internal.console.Command;
+import net.bukkitlabs.bukkitlabscloudapi.internal.console.Logger;
 import org.jetbrains.annotations.NotNull;
 
 public class ServerCommand implements CloudCommand {
