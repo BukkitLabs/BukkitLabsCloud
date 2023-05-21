@@ -2,6 +2,7 @@ package net.bukkitlabs.bukkitlabscloud;
 
 import net.bukkitlabs.bukkitlabscloud.command.HelpCommand;
 import net.bukkitlabs.bukkitlabscloud.command.ServerCommand;
+import net.bukkitlabs.bukkitlabscloud.command.TestCommand;
 import net.bukkitlabs.bukkitlabscloud.handler.ConfigHandler;
 import net.bukkitlabs.bukkitlabscloud.packet.ServerInitializeEvent;
 import net.bukkitlabs.bukkitlabscloud.packet.ServerShutdownEvent;
@@ -12,9 +13,12 @@ import net.bukkitlabs.bukkitlabscloudapi.internal.event.PacketCannotBeProcessedE
 import net.bukkitlabs.bukkitlabscloudapi.internal.event.PacketCatch;
 import net.bukkitlabs.bukkitlabscloudapi.internal.event.PacketHandler;
 import net.bukkitlabs.bukkitlabscloudapi.internal.packet.LoggerConfigurationLoadEvent;
+import net.bukkitlabs.bukkitlabscloudapi.socket.event.ClientConnectEvent;
+import net.bukkitlabs.bukkitlabscloudapi.socket.server.PacketCommunicationServer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 public class BukkitLabsCloud implements Listener {
 
@@ -22,6 +26,7 @@ public class BukkitLabsCloud implements Listener {
     private static PacketHandler packetHandler;
     private static ConfigHandler configHandler;
     private static CommandHandler commandHandler;
+    private static final PacketCommunicationServer server = new PacketCommunicationServer();
 
     private BukkitLabsCloud() {
         setPacketHandler(new PacketHandler());
@@ -85,6 +90,11 @@ public class BukkitLabsCloud implements Listener {
         BukkitLabsCloud.commandHandler = commandHandler;
     }
 
+    @NotNull
+    public static PacketCommunicationServer getServer() {
+        return server;
+    }
+
     @PacketCatch
     private void onServerInitialization(final ServerInitializeEvent event) {
         try {
@@ -102,15 +112,37 @@ public class BukkitLabsCloud implements Listener {
         this.registerCommands();
 
         getLogger().log(Logger.Level.INFO, "Starting BukkitLabsCloud...");
+
+        try {
+            InetAddress address = server.initialize(8888, getPacketHandler());
+            getLogger().log(Logger.Level.INFO, "Server initialized as " + address.getCanonicalHostName());
+            new Thread(() -> {
+                try {
+                    server.start();
+                } catch (IOException exception) {
+                    getLogger().log(Logger.Level.ERROR, "Server start failed: ", exception);
+                }
+            }).start();
+            getLogger().log(Logger.Level.INFO, "Server started as " + address.getCanonicalHostName());
+        } catch (IOException exception) {
+            getLogger().log(Logger.Level.ERROR, "Server start failed: ", exception);
+        }
     }
 
     @PacketCatch
     private void onServerShutdown(final ServerShutdownEvent event) {
+        server.stop();
         getLogger().log(Logger.Level.INFO, "Goodbye...");
+    }
+
+    @PacketCatch
+    private void onClientConnect(final ClientConnectEvent event) {
+        getLogger().log(Logger.Level.INFO, "Client connected: " + event.getInetAddress().getCanonicalHostName());
     }
 
     private void registerCommands() {
         new HelpCommand();
         new ServerCommand();
+        new TestCommand();
     }
 }

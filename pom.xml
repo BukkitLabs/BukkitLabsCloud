@@ -100,7 +100,12 @@
         <dependency>
             <groupId>com.github.BukkitLabs.BukkitLabsCloudAPI</groupId>
             <artifactId>InternalAPI</artifactId>
-            <version>17e7e43c0d</version>
+            <version>17f339c6aa</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.BukkitLabs.BukkitLabsCloudAPI</groupId>
+            <artifactId>SocketAPI</artifactId>
+            <version>17f339c6aa</version>
         </dependency>
     </dependencies>
 </project>
